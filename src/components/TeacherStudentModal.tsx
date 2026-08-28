@@ -4,19 +4,7 @@ import { ConstellationRadar } from './ConstellationRadar';
 import { SCALES, SCALE_ORDER, SUPPORT_TIPS } from '../data/constellationData';
 import { getTopAndFocusTraits, saveStudent } from '../utils/storage';
 import { generateStudentPDF } from '../utils/pdfExport';
-import {
-  ArrowLeft,
-  Printer,
-  Sparkles,
-  BookOpen,
-  Target,
-  Lightbulb,
-  MessageSquare,
-  Save,
-  Check,
-  FileDown,
-  Loader2
-} from 'lucide-react';
+import { ArrowLeft, Printer, Sparkles, BookOpen, Target, Lightbulb, MessageSquare, Save, Check, FileDown, Loader as Loader2 } from 'lucide-react';
 
 interface TeacherStudentModalProps {
   student: StudentRecord;
