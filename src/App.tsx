@@ -13,7 +13,7 @@ import { TeacherGateView } from './components/TeacherGateView';
 import { TeacherDashboardView } from './components/TeacherDashboardView';
 import { TeacherStudentModal } from './components/TeacherStudentModal';
 import { AboutScalesModal } from './components/AboutScalesModal';
-import { Sparkles, Heart } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<AppView>('home');
@@ -33,8 +33,8 @@ export default function App() {
     refreshStudents();
   }, []);
 
-  const refreshStudents = () => {
-    const list = getAllStudents();
+  const refreshStudents = async () => {
+    const list = await getAllStudents();
     setStudents(list);
   };
 
@@ -58,8 +58,7 @@ export default function App() {
       timestamp: Date.now()
     };
 
-    saveStudent(newRecord);
-    refreshStudents();
+    saveStudent(newRecord).then(() => refreshStudents());
     setCurrentStudent(newRecord);
     setCurrentView('results');
   };

@@ -1,69 +1,120 @@
-import { StudentRecord, TraitScores, TraitKey, PairMatch } from '../types';
-import { INITIAL_SEEDED_STUDENTS, SCALE_ORDER, SCALES, TEACHER_PASSCODE_DEFAULT, determineArchetype, calculateCategory } from '../data/constellationData';
+import { StudentRecord, TraitScores, TraitKey, PairMatch, ArchetypeDefinition } from '../types';
+import { SCALE_ORDER, SCALES, TEACHER_PASSCODE_DEFAULT, determineArchetype, calculateCategory } from '../data/constellationData';
+import { supabase } from '../lib/supabaseClient';
 
-const STORAGE_KEY_STUDENTS = 'learning_constellation_students_v1';
 const STORAGE_KEY_PASSCODE = 'learning_constellation_passcode_v1';
 const STORAGE_KEY_RECENT_CODES = 'learning_constellation_recent_codes_v1';
 
-export function initializeStorage(): void {
-  if (typeof window === 'undefined') return;
-  
-  const existing = localStorage.getItem(STORAGE_KEY_STUDENTS);
-  if (!existing) {
-    localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(INITIAL_SEEDED_STUDENTS));
-  }
+// ---- DB row shape ----
+interface StudentRow {
+  id: string;
+  name: string;
+  grade: string;
+  class_name: string;
+  answers: Record<number, number>;
+  reflection: string;
+  scores: TraitScores;
+  archetype: ArchetypeDefinition;
+  notes: string | null;
+  timestamp: number;
+}
 
+function rowToRecord(row: StudentRow): StudentRecord {
+  return {
+    id: row.id,
+    name: row.name,
+    grade: row.grade,
+    className: row.class_name,
+    answers: row.answers ?? {},
+    reflection: row.reflection ?? '',
+    scores: row.scores ?? ({} as TraitScores),
+    archetype: row.archetype ?? determineArchetype(row.scores ?? ({} as TraitScores)),
+    notes: row.notes ?? undefined,
+    timestamp: row.timestamp,
+  };
+}
+
+function recordToRow(student: StudentRecord): Omit<StudentRow, 'created_at' | 'updated_at'> {
+  return {
+    id: student.id,
+    name: student.name,
+    grade: student.grade,
+    class_name: student.className,
+    answers: student.answers,
+    reflection: student.reflection,
+    scores: student.scores,
+    archetype: student.archetype,
+    notes: student.notes ?? null,
+    timestamp: student.timestamp,
+  };
+}
+
+/**
+ * Kept for backwards compatibility with App.tsx (called on mount).
+ * The Supabase database is pre-seeded, so no local initialization is needed.
+ */
+export function initializeStorage(): void {
+  // Ensure the passcode exists in localStorage for the teacher gate
+  if (typeof window === 'undefined') return;
   const existingPass = localStorage.getItem(STORAGE_KEY_PASSCODE);
   if (!existingPass) {
     localStorage.setItem(STORAGE_KEY_PASSCODE, TEACHER_PASSCODE_DEFAULT);
   }
 }
 
-export function getAllStudents(): StudentRecord[] {
-  if (typeof window === 'undefined') return INITIAL_SEEDED_STUDENTS;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_STUDENTS);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(INITIAL_SEEDED_STUDENTS));
-      return INITIAL_SEEDED_STUDENTS;
-    }
-    const parsed = JSON.parse(raw) as StudentRecord[];
-    // Ensure timestamps and valid structures
-    return parsed.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-  } catch (err) {
-    console.error('Error loading students from localStorage:', err);
-    return INITIAL_SEEDED_STUDENTS;
+export async function getAllStudents(): Promise<StudentRecord[]> {
+  const { data, error } = await supabase
+    .from('students')
+    .select('*')
+    .order('timestamp', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching students from Supabase:', error);
+    return [];
   }
+
+  return (data as StudentRow[]).map(rowToRecord);
 }
 
-export function saveStudent(student: StudentRecord): void {
-  if (typeof window === 'undefined') return;
-  const current = getAllStudents();
-  const index = current.findIndex((s) => s.id.toLowerCase() === student.id.toLowerCase());
-  
-  let updated: StudentRecord[];
-  if (index >= 0) {
-    updated = [...current];
-    updated[index] = student;
-  } else {
-    updated = [student, ...current];
-  }
+export async function saveStudent(student: StudentRecord): Promise<void> {
+  const row = recordToRow(student);
+  const { error } = await supabase
+    .from('students')
+    .upsert(row, { onConflict: 'id' });
 
-  localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(updated));
+  if (error) {
+    console.error('Error saving student to Supabase:', error);
+    return;
+  }
   addRecentCode(student.id);
 }
 
-export function deleteStudent(id: string): void {
-  if (typeof window === 'undefined') return;
-  const current = getAllStudents();
-  const updated = current.filter((s) => s.id.toLowerCase() !== id.toLowerCase());
-  localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(updated));
+export async function deleteStudent(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('students')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting student from Supabase:', error);
+  }
 }
 
-export function findStudentByCode(code: string): StudentRecord | null {
-  const all = getAllStudents();
+export async function findStudentByCode(code: string): Promise<StudentRecord | null> {
   const clean = code.trim().toLowerCase();
-  return all.find((s) => s.id.toLowerCase() === clean) || null;
+  const { data, error } = await supabase
+    .from('students')
+    .select('*')
+    .ilike('id', clean)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Error finding student by code:', error);
+    return null;
+  }
+
+  if (!data) return null;
+  return rowToRecord(data as StudentRow);
 }
 
 export function getTeacherPasscode(): string {
@@ -153,17 +204,14 @@ export function calculateStudyPairs(students: StudentRecord[]): PairMatch[] {
       const sA = students[i];
       const sB = students[j];
 
-      // Calculate Euclidean distance across all 6 traits
       let distSq = 0;
       SCALE_ORDER.forEach((k) => {
         const diff = sA.scores[k].mean - sB.scores[k].mean;
         distSq += diff * diff;
       });
       const dist = Math.sqrt(distSq);
-      // Max possible distance in 6 dimensions with range 1..5 is sqrt(6 * 4^2) = sqrt(96) ~= 9.79
       const similarityPct = Math.max(10, Math.min(99, Math.round((1 - dist / 9.8) * 100)));
 
-      // Determine synergy archetype
       let synergyType: PairMatch['synergyType'] = 'Balanced Synergy';
       let description = 'Complementary problem-solving approaches that expand each other’s perspectives.';
 
@@ -200,7 +248,6 @@ export function calculateStudyPairs(students: StudentRecord[]): PairMatch[] {
     }
   }
 
-  // Sort by high compatibility
   return matches.sort((a, b) => b.similarityPct - a.similarityPct);
 }
 

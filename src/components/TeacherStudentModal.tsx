@@ -38,9 +38,9 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
   const focusScale = SCALES[focus];
   const focusTip = SUPPORT_TIPS[focus];
 
-  const handleSaveNotes = () => {
+  const handleSaveNotes = async () => {
     const updated: StudentRecord = { ...student, notes };
-    saveStudent(updated);
+    await saveStudent(updated);
     onUpdateStudent(updated);
     setSavedNotes(true);
     setTimeout(() => setSavedNotes(false), 2000);

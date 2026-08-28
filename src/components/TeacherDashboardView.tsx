@@ -31,7 +31,7 @@ interface TeacherDashboardViewProps {
   students: StudentRecord[];
   onSelectStudent: (student: StudentRecord) => void;
   onNavigate: (view: AppView) => void;
-  onRefreshData: () => void;
+  onRefreshData: () => void | Promise<void>;
   onLogout: () => void;
 }
 
@@ -113,10 +113,10 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
     exportCohortToCSV(classFilteredStudents, label);
   };
 
-  const handleDelete = (id: string, e: React.MouseEvent) => {
+  const handleDelete = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm('Remove this student response?')) {
-      deleteStudent(id);
+      await deleteStudent(id);
       onRefreshData();
     }
   };
@@ -149,8 +149,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       timestamp: Date.now()
     };
 
-    saveStudent(newStudent);
-    onRefreshData();
+    saveStudent(newStudent).then(() => onRefreshData());
   };
 
   const studentA = students.find((s) => s.id === compareStudentAId);

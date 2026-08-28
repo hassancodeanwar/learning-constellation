@@ -16,7 +16,7 @@ export const LookupView: React.FC<LookupViewProps> = ({
   const [error, setError] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = (searchCode: string) => {
+  const handleSearch = async (searchCode: string) => {
     const clean = searchCode.trim();
     if (!clean) {
       setError('Please enter a student results code (e.g. AJ-4821).');
@@ -26,16 +26,14 @@ export const LookupView: React.FC<LookupViewProps> = ({
     setError('');
     setIsSearching(true);
 
-    setTimeout(() => {
-      const found = findStudentByCode(clean);
-      setIsSearching(false);
+    const found = await findStudentByCode(clean);
+    setIsSearching(false);
 
-      if (found) {
-        onStudentFound(found);
-      } else {
-        setError(`No constellation found for code "${clean.toUpperCase()}". Please check your spelling.`);
-      }
-    }, 250);
+    if (found) {
+      onStudentFound(found);
+    } else {
+      setError(`No constellation found for code "${clean.toUpperCase()}". Please check your spelling.`);
+    }
   };
 
   return (
