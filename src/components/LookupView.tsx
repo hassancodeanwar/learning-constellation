@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AppView, StudentRecord } from '../types';
 import { findStudentByCode } from '../utils/storage';
-import { ArrowLeft, Search, Sparkles, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Search, Sparkles, CircleAlert as AlertCircle } from 'lucide-react';
 
 interface LookupViewProps {
   onNavigate: (view: AppView) => void;
