@@ -1,9 +1,10 @@
 import { StudentRecord, TraitScores, TraitKey, PairMatch, ArchetypeDefinition } from '../types';
-import { SCALE_ORDER, SCALES, TEACHER_PASSCODE_DEFAULT, determineArchetype, calculateCategory } from '../data/constellationData';
+import { SCALE_ORDER, SCALES, TEACHER_PASSCODE_DEFAULT, INITIAL_SEEDED_STUDENTS, determineArchetype, calculateCategory } from '../data/constellationData';
 import { supabase } from '../lib/supabaseClient';
 
 const STORAGE_KEY_PASSCODE = 'learning_constellation_passcode_v1';
 const STORAGE_KEY_RECENT_CODES = 'learning_constellation_recent_codes_v1';
+const STORAGE_KEY_STUDENTS = 'learning_constellation_students_v1';
 
 // ---- DB row shape ----
 interface StudentRow {
@@ -49,72 +50,137 @@ function recordToRow(student: StudentRecord): Omit<StudentRow, 'created_at' | 'u
   };
 }
 
+function getLocalStudents(): StudentRecord[] {
+  if (typeof window === 'undefined') return INITIAL_SEEDED_STUDENTS;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_STUDENTS);
+    return raw ? JSON.parse(raw) : INITIAL_SEEDED_STUDENTS;
+  } catch {
+    return INITIAL_SEEDED_STUDENTS;
+  }
+}
+
+function saveLocalStudent(student: StudentRecord): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const current = getLocalStudents();
+    const idx = current.findIndex((s) => s.id === student.id);
+    if (idx >= 0) {
+      current[idx] = student;
+    } else {
+      current.unshift(student);
+    }
+    localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(current));
+  } catch (e) {
+    console.error('Failed to save to local storage', e);
+  }
+}
+
+function deleteLocalStudent(id: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const current = getLocalStudents().filter((s) => s.id !== id);
+    localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(current));
+  } catch (e) {
+    console.error('Failed to delete from local storage', e);
+  }
+}
+
 /**
- * Kept for backwards compatibility with App.tsx (called on mount).
- * The Supabase database is pre-seeded, so no local initialization is needed.
+ * Initializes localStorage with default teacher passcode and seeded students if not already present.
  */
 export function initializeStorage(): void {
-  // Ensure the passcode exists in localStorage for the teacher gate
   if (typeof window === 'undefined') return;
   const existingPass = localStorage.getItem(STORAGE_KEY_PASSCODE);
   if (!existingPass) {
     localStorage.setItem(STORAGE_KEY_PASSCODE, TEACHER_PASSCODE_DEFAULT);
   }
+  const existingStudents = localStorage.getItem(STORAGE_KEY_STUDENTS);
+  if (!existingStudents) {
+    localStorage.setItem(STORAGE_KEY_STUDENTS, JSON.stringify(INITIAL_SEEDED_STUDENTS));
+  }
 }
 
 export async function getAllStudents(): Promise<StudentRecord[]> {
-  const { data, error } = await supabase
-    .from('students')
-    .select('*')
-    .order('timestamp', { ascending: false });
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('students')
+        .select('*')
+        .order('timestamp', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching students from Supabase:', error);
-    return [];
+      if (!error && data && data.length > 0) {
+        return (data as StudentRow[]).map(rowToRecord);
+      }
+    } catch (err) {
+      console.warn('Supabase fetch failed, using local storage:', err);
+    }
   }
 
-  return (data as StudentRow[]).map(rowToRecord);
+  return getLocalStudents();
 }
 
 export async function saveStudent(student: StudentRecord): Promise<void> {
-  const row = recordToRow(student);
-  const { error } = await supabase
-    .from('students')
-    .upsert(row, { onConflict: 'id' });
-
-  if (error) {
-    console.error('Error saving student to Supabase:', error);
-    return;
-  }
+  saveLocalStudent(student);
   addRecentCode(student.id);
+
+  if (supabase) {
+    try {
+      const row = recordToRow(student);
+      const { error } = await supabase
+        .from('students')
+        .upsert(row, { onConflict: 'id' });
+
+      if (error) {
+        console.warn('Error saving student to Supabase (saved locally):', error);
+      }
+    } catch (err) {
+      console.warn('Supabase save failed (saved locally):', err);
+    }
+  }
 }
 
 export async function deleteStudent(id: string): Promise<void> {
-  const { error } = await supabase
-    .from('students')
-    .delete()
-    .eq('id', id);
+  deleteLocalStudent(id);
 
-  if (error) {
-    console.error('Error deleting student from Supabase:', error);
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('students')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.warn('Error deleting student from Supabase:', error);
+      }
+    } catch (err) {
+      console.warn('Supabase delete failed:', err);
+    }
   }
 }
 
 export async function findStudentByCode(code: string): Promise<StudentRecord | null> {
   const clean = code.trim().toLowerCase();
-  const { data, error } = await supabase
-    .from('students')
-    .select('*')
-    .ilike('id', clean)
-    .maybeSingle();
 
-  if (error) {
-    console.error('Error finding student by code:', error);
-    return null;
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('students')
+        .select('*')
+        .ilike('id', clean)
+        .maybeSingle();
+
+      if (!error && data) {
+        return rowToRecord(data as StudentRow);
+      }
+    } catch (err) {
+      console.warn('Supabase find failed, searching local storage:', err);
+    }
   }
 
-  if (!data) return null;
-  return rowToRecord(data as StudentRow);
+  const local = getLocalStudents();
+  const found = local.find((s) => s.id.toLowerCase() === clean);
+  return found || null;
 }
 
 export function getTeacherPasscode(): string {
