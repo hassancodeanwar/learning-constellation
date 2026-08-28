@@ -1,0 +1,8 @@
+{
+  "name": "Learning Constellation",
+  "description": "A celestial learning-style assessment and teacher analytics platform mapping student traits, strengths, and study synergies as interactive constellations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
