@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AppView, StudentRecord, TraitKey } from '../types';
 import { ConstellationRadar } from './ConstellationRadar';
+import { WILSCrest } from './WILSLogo';
 import { SCALES, SCALE_ORDER, SUPPORT_TIPS } from '../data/constellationData';
 import { getTopAndFocusTraits } from '../utils/storage';
 import { generateStudentPDF } from '../utils/pdfExport';
@@ -44,10 +45,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   useEffect(() => {
     try {
       confetti({
-        particleCount: 50,
-        spread: 60,
+        particleCount: 60,
+        spread: 70,
         origin: { y: 0.6 },
-        colors: ['#4ed9c0', '#f2b84b', '#818cf8', '#f87171']
+        colors: ['#f5b716', '#a855f7', '#ffffff', '#ffd700']
       });
     } catch {
       // Ignore if confetti unavailable
@@ -78,11 +79,11 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   };
 
   const handleShare = async () => {
-    const text = `I just charted my Learning Constellation! My archetype is "${student.archetype.name}" (${student.id}).`;
+    const text = `I just charted my WILS Learning Constellation! My archetype is "${student.archetype.name}" (Student ID: ${student.id}).`;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My Learning Constellation',
+          title: 'WILS Learning Constellation',
           text,
           url: window.location.href
         });
@@ -116,15 +117,15 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
     <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-8">
       {/* Header Banner */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-mono uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono uppercase tracking-wider">
+          <WILSCrest size={16} />
           <span>{student.name} • Class {student.className}</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight">
-          Your Constellation is Charted
+        <h1 className="text-3xl sm:text-4xl font-bold font-brand text-white tracking-tight">
+          Your WILS Constellation is Charted
         </h1>
         <p className="text-sm text-slate-300 max-w-lg mx-auto">
-          Here is your personalized cognitive profile, learning archetype, and targeted focus strategies for the semester.
+          Here is your verified Westview cognitive star map, learning archetype, and targeted focus strategies for this academic term.
         </p>
 
         {/* Quick action bar */}
@@ -133,17 +134,17 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             id="header-download-pdf-btn"
             onClick={handleDownloadPDF}
             disabled={isGeneratingPdf}
-            className="px-4 py-2 rounded-xl bg-teal-400/20 hover:bg-teal-400/30 border border-teal-400/40 text-teal-300 font-mono text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-100 disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] font-brand font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg hover:shadow-xl hover:scale-105 active:scale-100 disabled:opacity-50"
           >
             {isGeneratingPdf ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Building PDF...</span>
+                <Loader2 className="w-4 h-4 animate-spin text-[#12092a]" />
+                <span>Generating WILS Dossier...</span>
               </>
             ) : (
               <>
-                <FileDown className="w-3.5 h-3.5 text-teal-300" />
-                <span>Download PDF Summary</span>
+                <FileDown className="w-4 h-4 text-[#12092a]" />
+                <span>Download Official PDF Report</span>
               </>
             )}
           </button>
@@ -155,10 +156,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
         {/* Radar Card */}
         <div
           id="results-radar-container"
-          className="lg:col-span-6 bg-[#181b42] border border-white/15 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col items-center justify-center relative overflow-hidden"
+          className="lg:col-span-6 bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col items-center justify-center relative overflow-hidden"
         >
-          <div className="absolute top-3 left-4 text-[11px] font-mono text-slate-400">
-            Celestial Radar Map
+          <div className="absolute top-3 left-4 text-[11px] font-mono text-[#f5b716]">
+            WILS Celestial Radar Map
           </div>
           <div className="py-4">
             <ConstellationRadar scores={student.scores} size={320} interactive={true} />
@@ -169,26 +170,26 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
         </div>
 
         {/* Archetype Card */}
-        <div className="lg:col-span-6 bg-gradient-to-br from-[#1b1f4c] via-[#1a1c44] to-[#151739] border border-amber-400/30 rounded-3xl p-6 sm:p-7 shadow-2xl flex flex-col justify-between space-y-5 relative overflow-hidden">
+        <div className="lg:col-span-6 bg-gradient-to-br from-[#241249] via-[#1c0e38] to-[#140a28] border border-[#f5b716]/35 rounded-3xl p-6 sm:p-7 shadow-2xl flex flex-col justify-between space-y-5 relative overflow-hidden">
           {/* Subtle glow */}
-          <div className="absolute -top-10 -right-10 w-36 h-36 bg-amber-400/15 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#f5b716]/15 rounded-full blur-2xl pointer-events-none" />
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-semibold text-amber-300 bg-amber-400/15 px-3 py-1 rounded-full border border-amber-400/30 flex items-center gap-1.5">
+              <span className="text-xs font-mono font-bold text-amber-300 bg-[#f5b716]/15 px-3 py-1 rounded-full border border-[#f5b716]/30 flex items-center gap-1.5">
                 <span>{student.archetype.symbol}</span>
-                Primary Archetype
+                WILS Learning Archetype
               </span>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-300">
                 Grade {student.grade}
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-bold font-display text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold font-brand text-white">
               {student.archetype.name}
             </h2>
 
-            <p className="text-xs font-mono text-teal-300 font-medium">
+            <p className="text-xs font-mono text-amber-300 font-semibold">
               {student.archetype.subtitle}
             </p>
 
@@ -199,19 +200,19 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
           {/* Superpower & Study Tactic */}
           <div className="space-y-3 pt-3 border-t border-white/10">
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+            <div className="p-3.5 rounded-2xl bg-[#120926]/70 border border-[#f5b716]/20 space-y-1">
               <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-300">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Superpower</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#f5b716]" />
+                <span>Primary Superpower</span>
               </div>
               <p className="text-xs text-slate-200 leading-relaxed">
                 {student.archetype.superpower}
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-teal-300">
-                <Lightbulb className="w-3.5 h-3.5" />
+            <div className="p-3.5 rounded-2xl bg-[#120926]/70 border border-purple-400/20 space-y-1">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-purple-300">
+                <Lightbulb className="w-3.5 h-3.5 text-purple-300" />
                 <span>Optimal Study Strategy</span>
               </div>
               <p className="text-xs text-slate-200 leading-relaxed">
@@ -223,10 +224,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
       </div>
 
       {/* Trait Breakdown Bar Charts */}
-      <div className="bg-[#181b42] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-5">
+      <div className="bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-5">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg sm:text-xl font-bold font-display text-white flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-teal-400" />
+          <h3 className="text-lg sm:text-xl font-bold font-brand text-white flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-amber-400" />
             <span>Dimension Score Breakdown</span>
           </h3>
           <span className="text-xs font-mono text-slate-400">Scale: 1.0 (Low) – 5.0 (High)</span>
@@ -242,20 +243,20 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
               score?.cat === 'H' ? 'High Strength' : score?.cat === 'M' ? 'Moderate' : 'Growth Focus';
             const catBadgeClass =
               score?.cat === 'H'
-                ? 'bg-amber-400/15 text-amber-300 border-amber-400/30'
+                ? 'bg-[#f5b716]/20 text-[#f5b716] border-[#f5b716]/40'
                 : score?.cat === 'M'
-                ? 'bg-teal-400/15 text-teal-300 border-teal-400/30'
+                ? 'bg-purple-400/15 text-purple-300 border-purple-400/30'
                 : 'bg-rose-400/15 text-rose-300 border-rose-400/30';
 
             return (
-              <div key={scaleKey} className="p-3 rounded-2xl bg-[#121430] border border-white/5 space-y-2">
+              <div key={scaleKey} className="p-3.5 rounded-2xl bg-[#120926] border border-white/5 space-y-2">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <div className="flex items-center gap-2">
                     <span
                       className="w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: scale.color }}
                     />
-                    <span className="font-semibold text-white">{scale.label}</span>
+                    <span className="font-semibold font-brand text-white">{scale.label}</span>
                   </div>
                   <div className="flex items-center gap-2 font-mono">
                     <span className={`text-[10px] px-2 py-0.5 rounded-full border ${catBadgeClass}`}>
@@ -268,7 +269,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-2.5 w-full bg-slate-800/80 rounded-full overflow-hidden">
+                <div className="h-2.5 w-full bg-[#20123f] rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
@@ -286,41 +287,41 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
       {/* Strength & Growth Pair Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Top Strength */}
-        <div className="p-6 rounded-3xl bg-[#171a42] border border-amber-400/30 space-y-3 shadow-xl">
+        <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/35 space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="px-2.5 py-1 rounded-full bg-amber-400/15 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-amber-400/30 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
+            <span className="px-2.5 py-1 rounded-full bg-[#f5b716]/15 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-[#f5b716]/30 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#f5b716]" />
               Primary Strength
             </span>
             <span className="text-xs font-mono font-bold text-amber-300">
               {student.scores[top]?.mean?.toFixed(2)} / 5.0
             </span>
           </div>
-          <h4 className="text-lg font-bold font-display text-white">{topScale.label}</h4>
+          <h4 className="text-lg font-bold font-brand text-white">{topScale.label}</h4>
           <p className="text-xs text-slate-300 leading-relaxed">
             {topScale.highDescription}
           </p>
-          <div className="pt-2 text-xs font-mono text-amber-200/90 border-t border-white/10">
-            ✦ Lean heavily into this superpower when designing study routines.
+          <div className="pt-2 text-xs font-mono text-amber-300 border-t border-white/10">
+            ✦ Lean heavily into this strength during group projects & exam preparation.
           </div>
         </div>
 
         {/* Growth Focus */}
-        <div className="p-6 rounded-3xl bg-[#171a42] border border-teal-400/30 space-y-3 shadow-xl">
+        <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-purple-400/30 space-y-3 shadow-xl">
           <div className="flex items-center justify-between">
-            <span className="px-2.5 py-1 rounded-full bg-teal-400/15 text-teal-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-teal-400/30 flex items-center gap-1">
-              <Target className="w-3 h-3" />
+            <span className="px-2.5 py-1 rounded-full bg-purple-400/15 text-purple-300 text-[11px] font-mono font-bold uppercase tracking-wider border border-purple-400/30 flex items-center gap-1">
+              <Target className="w-3 h-3 text-purple-300" />
               Growth Focus Area
             </span>
-            <span className="text-xs font-mono font-bold text-teal-300">
+            <span className="text-xs font-mono font-bold text-purple-300">
               {student.scores[focus]?.mean?.toFixed(2)} / 5.0
             </span>
           </div>
-          <h4 className="text-lg font-bold font-display text-white">{focusScale.label}</h4>
+          <h4 className="text-lg font-bold font-brand text-white">{focusScale.label}</h4>
           <p className="text-xs text-slate-300 leading-relaxed">
             {supportTip.student}
           </p>
-          <div className="pt-2 text-xs font-mono text-teal-200/90 border-t border-white/10">
+          <div className="pt-2 text-xs font-mono text-purple-200 border-t border-white/10">
             ✦ Classroom accommodation: {supportTip.classroom}
           </div>
         </div>
@@ -329,18 +330,18 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
       {/* Student Code Box Card */}
       <div
         id="student-code-card"
-        className="relative bg-gradient-to-r from-[#181c47] via-[#1e235a] to-[#181c47] border border-amber-400/40 hover:border-amber-400/60 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl backdrop-blur-xl transition-all overflow-hidden"
+        className="relative bg-gradient-to-r from-[#210f3f] via-[#2f155c] to-[#210f3f] border border-[#f5b716]/40 hover:border-[#f5b716]/60 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl backdrop-blur-xl transition-all overflow-hidden"
       >
         {/* Subtle decorative glow orb */}
-        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#f5b716]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="space-y-1.5 relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-mono font-semibold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono font-semibold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-[#f5b716] animate-pulse" />
             Save Your Unique Constellation Code
           </span>
           <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-            Use this permanent code to revisit your learning radar, compare traits with classmates, or download your official PDF report.
+            Use this permanent WILS code to revisit your learning radar, compare traits with classmates, or download your official PDF report.
           </p>
         </div>
 
@@ -348,21 +349,21 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           <div
             id="student-code-box"
             onClick={handleCopyCode}
-            className="w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-3.5 bg-[#0b0d24]/90 border-2 border-dashed border-amber-400/60 hover:border-amber-400 px-6 py-3 rounded-2xl cursor-pointer group transition-all shadow-inner"
+            className="w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-3.5 bg-[#0e071e]/90 border-2 border-dashed border-[#f5b716]/60 hover:border-[#f5b716] px-6 py-3 rounded-2xl cursor-pointer group transition-all shadow-inner"
             title="Click to copy code"
           >
-            <span className="font-mono text-2xl sm:text-3xl font-bold tracking-widest text-amber-300 group-hover:text-amber-200 transition-colors select-all">
+            <span className="font-mono text-2xl sm:text-3xl font-bold tracking-widest text-[#f5b716] group-hover:text-amber-200 transition-colors select-all">
               {student.id}
             </span>
-            <div className="p-2 rounded-xl bg-amber-400/20 group-hover:bg-amber-400/30 text-amber-300 transition-colors">
-              {copied ? <Check className="w-5 h-5 text-teal-300 animate-bounce" /> : <Copy className="w-5 h-5" />}
+            <div className="p-2 rounded-xl bg-[#f5b716]/20 group-hover:bg-[#f5b716]/30 text-[#f5b716] transition-colors">
+              {copied ? <Check className="w-5 h-5 text-amber-300 animate-bounce" /> : <Copy className="w-5 h-5" />}
             </div>
           </div>
         </div>
 
         {(copied || shareNotice) && (
-          <p className="text-xs font-mono text-teal-300 flex items-center justify-center gap-1.5 transition-all">
-            <Check className="w-4 h-4 text-teal-400" />
+          <p className="text-xs font-mono text-amber-300 flex items-center justify-center gap-1.5 transition-all">
+            <Check className="w-4 h-4 text-amber-400" />
             <span>{shareNotice || 'Unique code copied to clipboard!'}</span>
           </p>
         )}
@@ -372,12 +373,12 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             id="download-pdf-btn"
             onClick={handleDownloadPDF}
             disabled={isGeneratingPdf}
-            className="px-4 py-2.5 rounded-xl bg-teal-400/20 hover:bg-teal-400/30 border border-teal-400/40 text-teal-200 hover:text-teal-100 font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm disabled:opacity-50"
+            className="px-4 py-2.5 rounded-xl bg-[#f5b716]/20 hover:bg-[#f5b716]/30 border border-[#f5b716]/40 text-amber-200 hover:text-amber-100 font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm disabled:opacity-50"
           >
             {isGeneratingPdf ? (
-              <Loader2 className="w-3.5 h-3.5 text-teal-300 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 text-[#f5b716] animate-spin" />
             ) : (
-              <FileDown className="w-3.5 h-3.5 text-teal-300" />
+              <FileDown className="w-3.5 h-3.5 text-[#f5b716]" />
             )}
             <span>{isGeneratingPdf ? 'Exporting PDF...' : 'Download PDF'}</span>
           </button>
@@ -385,9 +386,9 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           <button
             id="copy-code-btn"
             onClick={handleCopyCode}
-            className="px-4 py-2.5 rounded-xl bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/30 text-amber-200 hover:text-amber-100 font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm"
+            className="px-4 py-2.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/30 text-purple-200 hover:text-purple-100 font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm"
           >
-            <Copy className="w-3.5 h-3.5 text-amber-300" />
+            <Copy className="w-3.5 h-3.5 text-purple-300" />
             <span>{copied ? 'Copied ✓' : 'Copy Code'}</span>
           </button>
 
@@ -396,7 +397,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             onClick={handleShare}
             className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm"
           >
-            <Share2 className="w-3.5 h-3.5 text-teal-300" />
+            <Share2 className="w-3.5 h-3.5 text-amber-300" />
             <span>Share Summary</span>
           </button>
 
@@ -405,7 +406,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             onClick={handlePrint}
             className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs font-mono flex items-center gap-1.5 transition-all hover:scale-105 active:scale-100 cursor-pointer shadow-sm"
           >
-            <Printer className="w-3.5 h-3.5 text-indigo-300" />
+            <Printer className="w-3.5 h-3.5 text-slate-200" />
             <span>Print Dossier</span>
           </button>
 
@@ -439,9 +440,9 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
           <button
             onClick={() => onNavigate('teacherGate')}
-            className="px-5 py-2.5 rounded-xl bg-teal-400/20 hover:bg-teal-400/30 border border-teal-400/40 text-teal-200 font-display font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-[#f5b716]/20 hover:bg-[#f5b716]/30 border border-[#f5b716]/40 text-amber-200 font-brand font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <span>Teacher Portal</span>
+            <span>Faculty Portal</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -449,4 +450,5 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
     </div>
   );
 };
+
 

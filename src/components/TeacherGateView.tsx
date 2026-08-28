@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppView } from '../types';
 import { getTeacherPasscode } from '../utils/storage';
+import { WILSCrest } from './WILSLogo';
 import { ArrowLeft, GraduationCap, KeyRound, AlertCircle } from 'lucide-react';
 
 interface TeacherGateViewProps {
@@ -24,7 +25,7 @@ export const TeacherGateView: React.FC<TeacherGateViewProps> = ({
       setError('');
       onAuthenticated();
     } else {
-      setError('Incorrect teacher passcode. Please try again.');
+      setError('Incorrect staff passcode. Please try again.');
     }
   };
 
@@ -33,42 +34,42 @@ export const TeacherGateView: React.FC<TeacherGateViewProps> = ({
       {/* Back button */}
       <button
         onClick={() => onNavigate('home')}
-        className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-teal-300 transition-colors cursor-pointer group"
+        className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-amber-300 transition-colors cursor-pointer group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         <span>Return to Home</span>
       </button>
 
-      <div className="bg-[#191c44] border border-white/15 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 text-center relative overflow-hidden">
+      <div className="bg-[#1c0e38]/90 border border-[#f5b716]/30 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 text-center relative overflow-hidden">
         {/* Ambient glow */}
-        <div className="absolute -top-12 -right-12 w-36 h-36 bg-indigo-500/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 w-36 h-36 bg-[#f5b716]/15 rounded-full blur-2xl pointer-events-none" />
 
         {/* Icon */}
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-teal-500/20 via-indigo-500/20 to-amber-500/20 border border-white/15 flex items-center justify-center text-teal-300 mx-auto shadow-lg">
-          <GraduationCap className="w-7 h-7" />
+        <div className="w-16 h-16 rounded-2xl bg-[#26134a] border border-[#f5b716]/30 flex items-center justify-center mx-auto shadow-lg p-2.5">
+          <WILSCrest size={40} />
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold font-display text-white">
-            Teacher & Staff Portal
+          <h2 className="text-2xl font-bold font-brand text-white">
+            Faculty & Staff Portal
           </h2>
           <p className="text-xs sm:text-sm text-slate-300">
-            Enter the authorized staff passcode to view cohort constellations, study group recommendations, and export class analytics.
+            Enter the authorized Westview staff passcode to view cohort constellations, study group recommendations, and export class analytics.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5 text-left">
-            <label className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <label className="text-xs font-mono font-bold text-amber-200 uppercase tracking-wider flex items-center gap-1.5">
               <KeyRound className="w-3.5 h-3.5 text-amber-400" />
-              Staff Passcode
+              <span>Staff Access Passcode</span>
             </label>
             <input
               type="password"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               placeholder="••••••••••••••"
-              className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white font-mono text-center text-base tracking-widest outline-none transition-all"
+              className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] focus:ring-2 focus:ring-[#f5b716]/20 rounded-2xl px-4 py-3.5 text-white font-mono text-center text-base tracking-widest outline-none transition-all shadow-inner"
               autoFocus
             />
           </div>
@@ -82,12 +83,13 @@ export const TeacherGateView: React.FC<TeacherGateViewProps> = ({
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-400 via-teal-500 to-indigo-500 text-slate-950 font-display font-bold text-sm shadow-lg shadow-teal-500/20 hover:shadow-teal-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] font-brand font-black text-sm shadow-xl shadow-[#f5b716]/20 hover:shadow-[#f5b716]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
           >
-            Enter Dashboard ✦
+            Access Dashboard ✦
           </button>
         </form>
       </div>
     </div>
   );
 };
+

@@ -13,8 +13,8 @@ interface ConstellationRadarProps {
 }
 
 const CAT_COLORS: Record<'H' | 'M' | 'L', { fill: string; stroke: string; glow: string; text: string }> = {
-  H: { fill: '#fbbf24', stroke: '#f59e0b', glow: 'rgba(251, 191, 36, 0.4)', text: 'High' },
-  M: { fill: '#2dd4bf', stroke: '#14b8a6', glow: 'rgba(45, 212, 191, 0.4)', text: 'Moderate' },
+  H: { fill: '#f5b716', stroke: '#d99b06', glow: 'rgba(245, 183, 22, 0.45)', text: 'High' },
+  M: { fill: '#c084fc', stroke: '#a855f7', glow: 'rgba(192, 132, 252, 0.4)', text: 'Moderate' },
   L: { fill: '#f87171', stroke: '#ef4444', glow: 'rgba(248, 113, 113, 0.4)', text: 'Focus Area' }
 };
 
@@ -76,16 +76,16 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
         <defs>
           {/* Radial cosmic gradient for filled polygon */}
           <radialGradient id={`constellationFill-${size}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#4ed9c0" stopOpacity="0.32" />
-            <stop offset="70%" stopColor="#818cf8" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.08" />
+            <stop offset="0%" stopColor="#f5b716" stopOpacity="0.38" />
+            <stop offset="60%" stopColor="#9333ea" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#3b0764" stopOpacity="0.08" />
           </radialGradient>
 
           {/* Glowing linear gradient for perimeter contour line */}
           <linearGradient id={`starLineGrad-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#4ed9c0" />
-            <stop offset="50%" stopColor="#818cf8" />
-            <stop offset="100%" stopColor="#fbbf24" />
+            <stop offset="0%" stopColor="#f5b716" />
+            <stop offset="50%" stopColor="#c084fc" />
+            <stop offset="100%" stopColor="#f7c53d" />
           </linearGradient>
 
           {/* Compare polygon stroke gradient */}
@@ -102,7 +102,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
         </defs>
 
         {/* Outer subtle glow disk */}
-        <circle cx={cx} cy={cy} r={maxR * 1.08} fill="rgba(78, 217, 192, 0.03)" />
+        <circle cx={cx} cy={cy} r={maxR * 1.08} fill="rgba(245, 183, 22, 0.04)" />
 
         {/* Concentric Guide Circles & Labels */}
         {rings.map((ringPct, idx) => (
@@ -112,7 +112,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
               cy={cy}
               r={maxR * (0.2 + ringPct * 0.8)}
               fill="none"
-              stroke="rgba(245, 243, 238, 0.08)"
+              stroke="rgba(245, 183, 22, 0.12)"
               strokeWidth={idx === rings.length - 1 ? 1.5 : 0.75}
               strokeDasharray={idx === rings.length - 1 ? 'none' : '3 4'}
             />
@@ -120,9 +120,10 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
               <text
                 x={cx + 4}
                 y={cy - maxR * (0.2 + ringPct * 0.8) + 9}
-                fill="rgba(169, 173, 209, 0.35)"
+                fill="rgba(245, 183, 22, 0.4)"
                 fontSize="8"
                 fontFamily="var(--font-mono)"
+                fontWeight="600"
               >
                 {(ringPct * 5).toFixed(0)}
               </text>
@@ -144,7 +145,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
               y1={cy}
               x2={x2}
               y2={y2}
-              stroke={isHovered ? SCALES[key].color : 'rgba(245, 243, 238, 0.12)'}
+              stroke={isHovered ? SCALES[key].color : 'rgba(255, 255, 255, 0.12)'}
               strokeWidth={isHovered ? 1.5 : 1}
               strokeDasharray={isHovered ? 'none' : '2 3'}
               className="transition-colors duration-200"
@@ -157,7 +158,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
           <polygon
             points={comparePath}
             fill="rgba(148, 163, 184, 0.08)"
-            stroke="url(#compareLineGrad-)"
+            stroke={`url(#compareLineGrad-${size})`}
             strokeWidth="1.5"
             strokeDasharray="4 3"
           />
@@ -182,7 +183,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
               y1={p.y}
               x2={next.x}
               y2={next.y}
-              stroke="rgba(255, 255, 255, 0.2)"
+              stroke="rgba(245, 183, 22, 0.25)"
               strokeWidth="1"
             />
           );
@@ -216,16 +217,16 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
                 cy={p.y}
                 r={nodeRadius}
                 fill={style.fill}
-                stroke="#0c0d1f"
+                stroke="#120926"
                 strokeWidth="1.5"
                 filter={`url(#starGlow-${size})`}
               />
 
               {/* Little sparkle cross on high stars */}
               {p.mean >= 4.0 && (
-                <g stroke={style.fill} strokeWidth="1" opacity="0.8">
+                <g stroke={style.fill} strokeWidth="1" opacity="0.9">
                   <line x1={p.x - 7} y1={p.y} x2={p.x + 7} y2={p.y} />
-                  <line x1={p.x} y1={p.y - 7} x2={p.x} y2={p.y + 7} />
+                  <line x1={p.x} y1={p.y - 7} x2={p.x + 7} y2={p.y} />
                 </g>
               )}
             </g>
@@ -257,10 +258,10 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
                   x={x}
                   y={y}
                   textAnchor={textAnchor}
-                  fill={isHovered ? SCALES[key].color : '#c7cbef'}
+                  fill={isHovered ? SCALES[key].color : '#f1ebff'}
                   fontSize={size < 300 ? '10' : '11.5'}
                   fontWeight={isHovered ? '700' : '600'}
-                  fontFamily="var(--font-display)"
+                  fontFamily="var(--font-brand)"
                   className="transition-colors duration-150"
                 >
                   {SCALES[key].shortLabel}
@@ -283,13 +284,13 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
 
       {/* Floating Tooltip info on hover */}
       {interactive && hoveredTrait && (
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#1b1e42]/95 backdrop-blur-md border border-cyan-400/30 text-xs px-3 py-1.5 rounded-full shadow-xl flex items-center gap-2 pointer-events-none z-20 whitespace-nowrap">
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#1c0e38]/95 backdrop-blur-md border border-[#f5b716]/40 text-xs px-3 py-1.5 rounded-full shadow-xl flex items-center gap-2 pointer-events-none z-20 whitespace-nowrap">
           <span
             className="w-2 h-2 rounded-full"
             style={{ backgroundColor: SCALES[hoveredTrait].color }}
           />
-          <span className="font-semibold text-white">{SCALES[hoveredTrait].label}:</span>
-          <span className="font-mono text-amber-300 font-bold">
+          <span className="font-semibold text-white font-brand">{SCALES[hoveredTrait].label}:</span>
+          <span className="font-mono text-[#f5b716] font-bold">
             {scores[hoveredTrait]?.mean?.toFixed(2)}
           </span>
           <span className="text-slate-300">({CAT_COLORS[scores[hoveredTrait]?.cat ?? 'M'].text})</span>
@@ -300,7 +301,7 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
       {compareScores && (
         <div className="mt-3 flex items-center justify-center gap-6 text-xs font-mono text-slate-300">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-1.5 rounded-full bg-gradient-to-r from-teal-400 to-amber-400" />
+            <span className="w-3 h-1.5 rounded-full bg-gradient-to-r from-[#f5b716] to-[#c084fc]" />
             <span>Student Constellation</span>
           </div>
           <div className="flex items-center gap-2">
@@ -312,3 +313,4 @@ export const ConstellationRadar: React.FC<ConstellationRadarProps> = ({
     </div>
   );
 };
+

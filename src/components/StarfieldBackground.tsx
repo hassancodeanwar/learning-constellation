@@ -33,7 +33,7 @@ export const StarfieldBackground: React.FC = () => {
       color: string;
     }> = [];
 
-    const starColors = ['#f5f3ee', '#4ed9c0', '#f2b84b', '#818cf8', '#a855f7'];
+    const starColors = ['#ffffff', '#f5b716', '#fcd34d', '#c084fc', '#e9d5ff', '#9333ea'];
 
     for (let i = 0; i < starCount; i++) {
       stars.push({

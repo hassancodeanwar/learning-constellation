@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppView, ArchetypeDefinition } from '../types';
 import { ConstellationRadar } from './ConstellationRadar';
+import { WILSCrest, WILSLogo } from './WILSLogo';
 import { ARCHETYPES, SCALES, SCALE_ORDER } from '../data/constellationData';
 import {
   Compass,
@@ -11,7 +12,8 @@ import {
   ShieldCheck,
   Users2,
   BrainCircuit,
-  Award
+  Award,
+  BookOpen
 } from 'lucide-react';
 
 interface HomeViewProps {
@@ -77,49 +79,57 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
         {/* Left column: Text & CTA */}
         <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-mono tracking-wide uppercase">
-            <Sparkles className="w-3.5 h-3.5 text-teal-400 animate-spin" style={{ animationDuration: '6s' }} />
-            <span>Psychometric Learning Assessment</span>
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#f5b716]/10 border border-[#f5b716]/30 text-amber-300 text-xs font-mono tracking-wide uppercase">
+            <WILSCrest size={18} />
+            <span className="font-brand font-bold text-amber-300">Westview International Language School</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-            Your Learning <br />
-            <span className="bg-gradient-to-r from-teal-300 via-amber-300 to-rose-300 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-brand tracking-tight text-white leading-[1.08]">
+            Learner <br />
+            <span className="bg-gradient-to-r from-[#f5b716] via-amber-200 to-purple-300 bg-clip-text text-transparent">
               Constellation
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            Answer 36 calibrated questions about how your mind works, focuses, recovers, and collaborates. Watch your unique learning star map form in real time — with zero wrong answers.
+          <p className="text-base sm:text-lg text-slate-200 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans">
+            WILS Psychometric Assessment for Grades 10–12. Answer 36 calibrated questions about how your mind works, focuses, recovers, and collaborates to map your unique learning constellation.
           </p>
 
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
             <button
               onClick={() => onNavigate('studentForm')}
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-display font-bold text-base shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] font-brand font-black text-base shadow-xl shadow-[#f5b716]/20 hover:shadow-[#f5b716]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
             >
-              <Compass className="w-5 h-5 text-slate-950" />
-              <span>I'm a Student ✦ Begin Survey</span>
+              <Compass className="w-5 h-5 text-[#12092a]" />
+              <span>Begin Student Assessment ✦</span>
+            </button>
+
+            <button
+              onClick={() => onNavigate('lookup')}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#231244]/80 hover:bg-[#30195c] text-slate-200 font-medium text-sm border border-[#f5b716]/30 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <Search className="w-4 h-4 text-amber-400" />
+              <span>Look Up Result Code</span>
             </button>
           </div>
         </div>
 
         {/* Right column: Interactive Constellation Preview */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-full bg-[#181a3d]/80 border border-white/15 rounded-3xl p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+          <div className="w-full bg-[#1c0e38]/85 border border-[#f5b716]/25 rounded-3xl p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
             {/* Ambient background glow */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-48 h-48 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#f5b716]/15 rounded-full blur-3xl pointer-events-none" />
 
             {/* Archetype switcher tabs */}
-            <div className="flex items-center justify-between gap-1 bg-[#10122e] p-1 rounded-xl border border-white/10 mb-4 overflow-x-auto">
+            <div className="flex items-center justify-between gap-1 bg-[#120926] p-1 rounded-xl border border-white/10 mb-4 overflow-x-auto">
               <button
                 id="preview-tab-catalyst"
                 onClick={() => setSelectedArchetypeKey('catalyst')}
                 className={`flex-1 min-w-[70px] py-1.5 px-2 rounded-lg text-xs font-mono transition-all text-center cursor-pointer ${
                   selectedArchetypeKey === 'catalyst'
-                    ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold shadow-sm'
+                    ? 'bg-[#f5b716]/25 text-[#f5b716] border border-[#f5b716]/50 font-bold shadow-sm'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -130,7 +140,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 onClick={() => setSelectedArchetypeKey('architect')}
                 className={`flex-1 min-w-[70px] py-1.5 px-2 rounded-lg text-xs font-mono transition-all text-center cursor-pointer ${
                   selectedArchetypeKey === 'architect'
-                    ? 'bg-indigo-400/20 text-indigo-300 border border-indigo-400/40 font-bold shadow-sm'
+                    ? 'bg-purple-500/25 text-purple-300 border border-purple-400/50 font-bold shadow-sm'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -141,7 +151,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 onClick={() => setSelectedArchetypeKey('navigator')}
                 className={`flex-1 min-w-[70px] py-1.5 px-2 rounded-lg text-xs font-mono transition-all text-center cursor-pointer ${
                   selectedArchetypeKey === 'navigator'
-                    ? 'bg-purple-400/20 text-purple-300 border border-purple-400/40 font-bold shadow-sm'
+                    ? 'bg-amber-400/25 text-amber-300 border border-amber-400/50 font-bold shadow-sm'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -152,7 +162,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 onClick={() => setSelectedArchetypeKey('craftsman')}
                 className={`flex-1 min-w-[70px] py-1.5 px-2 rounded-lg text-xs font-mono transition-all text-center cursor-pointer ${
                   selectedArchetypeKey === 'craftsman'
-                    ? 'bg-teal-400/20 text-teal-300 border border-teal-400/40 font-bold shadow-sm'
+                    ? 'bg-teal-400/25 text-teal-300 border border-teal-400/50 font-bold shadow-sm'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -166,14 +176,14 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
             </div>
 
             {/* Archetype mini summary card */}
-            <div className="mt-4 p-4 rounded-2xl bg-[#0f112b] border border-white/10 text-left space-y-1.5">
+            <div className="mt-4 p-4 rounded-2xl bg-[#110824] border border-[#f5b716]/20 text-left space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="font-display font-bold text-white text-base flex items-center gap-2">
+                <span className="font-brand font-bold text-white text-base flex items-center gap-2">
                   <span>{activeProfile.archetype.symbol}</span>
                   {activeProfile.archetype.name}
                 </span>
-                <span className="text-[11px] font-mono text-teal-300 bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">
-                  Archetype
+                <span className="text-[11px] font-mono text-amber-300 bg-[#f5b716]/15 px-2 py-0.5 rounded-full border border-[#f5b716]/30">
+                  WILS Profile
                 </span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
@@ -187,14 +197,14 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       {/* The 6 Scales Grid Showcase */}
       <div className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <span className="text-xs font-mono text-teal-400 tracking-wider uppercase">
+          <span className="text-xs font-mono text-[#f5b716] tracking-wider uppercase font-bold">
             Psychometric Foundations
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold font-brand text-white">
             The Six Dimensions of Learner Ecology
           </h2>
-          <p className="text-sm text-slate-400">
-            Every student brings a unique configuration of cognitive strengths, environmental needs, and focus habits.
+          <p className="text-sm text-slate-300">
+            Every WILS student brings a unique configuration of cognitive strengths, environmental needs, and focus habits.
           </p>
         </div>
 
@@ -204,7 +214,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
             return (
               <div
                 key={scaleKey}
-                className="p-5 rounded-2xl bg-[#17193b]/70 border border-white/10 hover:border-white/20 transition-all space-y-3 group hover:-translate-y-1"
+                className="p-5 rounded-2xl bg-[#1c0e38]/70 border border-[#f5b716]/15 hover:border-[#f5b716]/40 transition-all space-y-3 group hover:-translate-y-1 shadow-lg"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
@@ -212,7 +222,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                       className="w-3 h-3 rounded-full shadow-md"
                       style={{ backgroundColor: scale.color }}
                     />
-                    <h3 className="font-display font-bold text-base text-white group-hover:text-amber-200 transition-colors">
+                    <h3 className="font-brand font-bold text-base text-white group-hover:text-amber-300 transition-colors">
                       {scale.label}
                     </h3>
                   </div>
@@ -223,7 +233,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
                 <p className="text-xs text-slate-300 leading-relaxed">{scale.description}</p>
                 <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-400">
                   <span>Low: Processing</span>
-                  <span>High: Activated</span>
+                  <span className="text-amber-300 font-bold">High: Activated</span>
                 </div>
               </div>
             );
@@ -232,33 +242,33 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       </div>
 
       {/* Classroom Value Proposition Banner */}
-      <div className="p-8 rounded-3xl bg-gradient-to-r from-[#171a44] via-[#1c2152] to-[#171a44] border border-white/15 relative overflow-hidden shadow-2xl">
+      <div className="p-8 rounded-3xl bg-gradient-to-r from-[#210f3f] via-[#2f155c] to-[#210f3f] border border-[#f5b716]/30 relative overflow-hidden shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 mx-auto md:mx-0">
+            <div className="w-10 h-10 rounded-xl bg-[#f5b716]/15 border border-[#f5b716]/35 flex items-center justify-center text-amber-300 mx-auto md:mx-0">
               <BrainCircuit className="w-5 h-5" />
             </div>
-            <h4 className="font-display font-bold text-white text-base">Metacognitive Clarity</h4>
+            <h4 className="font-brand font-bold text-white text-base">Metacognitive Clarity</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Students identify their optimal study habits, stress triggers, and communication channels without judgment.
+              WILS students identify their optimal study habits, stress triggers, and communication channels without judgment.
             </p>
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-teal-400/15 border border-teal-400/30 flex items-center justify-center text-teal-300 mx-auto md:mx-0">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-400/35 flex items-center justify-center text-purple-300 mx-auto md:mx-0">
               <Users2 className="w-5 h-5" />
             </div>
-            <h4 className="font-display font-bold text-white text-base">Synergy-Based Study Pairs</h4>
+            <h4 className="font-brand font-bold text-white text-base">Synergy-Based Study Pairs</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Teachers generate balanced project teams and peer mentorship pairs powered by mathematical compatibility.
+              Educators generate balanced project teams and peer mentorship pairs powered by mathematical compatibility.
             </p>
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-indigo-400/15 border border-indigo-400/30 flex items-center justify-center text-indigo-300 mx-auto md:mx-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/35 flex items-center justify-center text-amber-300 mx-auto md:mx-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h4 className="font-display font-bold text-white text-base">Instructional Differentiation</h4>
+            <h4 className="font-brand font-bold text-white text-base">Instructional Differentiation</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
               Instant classroom strategy tips tailored to each student's focus areas and reflection support requests.
             </p>
@@ -268,3 +278,4 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
     </div>
   );
 };
+

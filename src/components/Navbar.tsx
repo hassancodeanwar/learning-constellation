@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppView } from '../types';
-import { Sparkles, Search, GraduationCap, Compass, BookOpen } from 'lucide-react';
+import { WILSCrest } from './WILSLogo';
+import { Search, GraduationCap, Compass, BookOpen } from 'lucide-react';
 
 interface NavbarProps {
   currentView: AppView;
@@ -14,84 +15,84 @@ export const Navbar: React.FC<NavbarProps> = ({
   isTeacherAuthenticated
 }) => {
   return (
-    <header className="relative z-30 border-b border-white/10 bg-[#0c0d1f]/80 backdrop-blur-xl sticky top-0 px-4 sm:px-8 py-3.5 transition-all">
+    <header className="relative z-30 border-b border-[#f5b716]/20 bg-[#120a2a]/85 backdrop-blur-xl sticky top-0 px-3 sm:px-8 py-2.5 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Brand */}
+        {/* WILS Brand */}
         <button
           onClick={() => onNavigate('home')}
           className="flex items-center gap-3 text-left group cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500/20 via-indigo-500/20 to-amber-500/30 border border-white/15 flex items-center justify-center text-amber-300 shadow-lg group-hover:scale-105 group-hover:border-teal-400/40 transition-all duration-300">
-            <Sparkles className="w-5 h-5 animate-pulse" />
+          <div className="p-1 rounded-xl bg-[#261345]/80 border border-[#f5b716]/30 shadow-lg group-hover:scale-105 group-hover:border-[#f5b716]/70 transition-all duration-300">
+            <WILSCrest size={38} />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-display font-bold text-lg text-white tracking-tight">
-                Learning Constellation
+            <div className="flex items-center gap-2">
+              <span className="font-brand font-black text-sm sm:text-base text-white tracking-wider leading-none uppercase">
+                WESTVIEW
               </span>
-              <span className="text-[10px] font-mono font-semibold uppercase px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-300 border border-teal-500/30 hidden sm:inline-block">
-                EdTech
+              <span className="text-[10px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-[#f5b716]/15 text-[#f5b716] border border-[#f5b716]/35 hidden sm:inline-block">
+                WILS Cairo
               </span>
             </div>
-            <p className="text-[11px] font-mono text-slate-400 hidden sm:block">
-              Psychometric Learner Mapping & Synergies
+            <p className="text-[10.5px] font-brand tracking-widest text-amber-300/90 uppercase hidden sm:block mt-0.5">
+              International Language School
             </p>
           </div>
         </button>
 
         {/* Navigation Links */}
-        <nav className="flex items-center gap-1.5 sm:gap-3">
+        <nav className="flex items-center gap-1 sm:gap-2.5">
           <button
             onClick={() => onNavigate('studentForm')}
-            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               currentView === 'studentForm' || currentView === 'quiz'
-                ? 'bg-amber-400/15 text-amber-300 border border-amber-400/30 shadow-sm'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
+                ? 'bg-[#f5b716] text-[#120a2a] font-bold shadow-md shadow-[#f5b716]/20'
+                : 'text-slate-200 hover:text-white hover:bg-white/5'
             }`}
           >
-            <Compass className="w-4 h-4 text-amber-400" />
+            <Compass className={`w-4 h-4 ${currentView === 'studentForm' || currentView === 'quiz' ? 'text-[#120a2a]' : 'text-amber-400'}`} />
             <span className="hidden xs:inline">Take Assessment</span>
             <span className="xs:hidden">Quiz</span>
           </button>
 
           <button
             onClick={() => onNavigate('lookup')}
-            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               currentView === 'lookup'
-                ? 'bg-teal-400/15 text-teal-300 border border-teal-400/30'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
+                ? 'bg-purple-600/30 text-amber-300 border border-[#f5b716]/40'
+                : 'text-slate-200 hover:text-white hover:bg-white/5'
             }`}
           >
-            <Search className="w-4 h-4 text-teal-400" />
+            <Search className="w-4 h-4 text-amber-400" />
             <span>Look Up</span>
           </button>
 
           <button
             onClick={() => onNavigate('aboutScales')}
-            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               currentView === 'aboutScales'
-                ? 'bg-indigo-400/15 text-indigo-300 border border-indigo-400/30'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
+                ? 'bg-purple-600/30 text-amber-300 border border-[#f5b716]/40'
+                : 'text-slate-200 hover:text-white hover:bg-white/5'
             }`}
           >
-            <BookOpen className="w-4 h-4 text-indigo-400" />
-            <span className="hidden sm:inline">6 Scales</span>
+            <BookOpen className="w-4 h-4 text-amber-400" />
+            <span className="hidden sm:inline">The 6 Scales</span>
           </button>
 
-          <div className="h-4 w-px bg-white/15 mx-1" />
+          <div className="h-4 w-px bg-white/15 mx-0.5 sm:mx-1" />
 
           <button
             onClick={() => onNavigate(isTeacherAuthenticated ? 'teacherDashboard' : 'teacherGate')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               currentView === 'teacherDashboard' || currentView === 'teacherGate' || currentView === 'teacherStudent'
-                ? 'bg-gradient-to-r from-teal-500/20 to-indigo-500/20 text-teal-200 border border-teal-400/40 shadow-md'
-                : 'bg-white/5 text-slate-200 hover:bg-white/10 border border-white/10'
+                ? 'bg-gradient-to-r from-purple-700/60 to-[#f5b716]/30 text-amber-200 border border-[#f5b716]/50 shadow-md'
+                : 'bg-white/5 text-slate-200 hover:bg-white/10 border border-white/10 hover:border-[#f5b716]/30'
             }`}
           >
-            <GraduationCap className="w-4 h-4 text-teal-300" />
-            <span className="font-display">Teacher Portal</span>
+            <GraduationCap className="w-4 h-4 text-amber-300" />
+            <span className="font-brand font-bold text-xs sm:text-sm">Staff Portal</span>
             {isTeacherAuthenticated && (
-              <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping ml-1" />
+              <span className="w-2 h-2 rounded-full bg-[#f5b716] animate-ping ml-1" />
             )}
           </button>
         </nav>
@@ -99,3 +100,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+

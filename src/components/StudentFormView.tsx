@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { AppView } from '../types';
 import { CLASSES_BY_GRADE } from '../data/constellationData';
-import { ArrowLeft, Compass, Sparkles, CheckCircle2, User, School } from 'lucide-react';
+import { WILSCrest } from './WILSLogo';
+import { ArrowLeft, Compass, Sparkles, CheckCircle2, User, School, GraduationCap } from 'lucide-react';
 
 interface StudentFormViewProps {
   onNavigate: (view: AppView) => void;
@@ -35,7 +36,7 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
     const finalClass = isCustomClass ? customClassName.trim().toUpperCase() : className;
 
     if (!finalName) {
-      setError('Please enter your full name or nickname.');
+      setError('Please enter your full name or preferred name.');
       return;
     }
     if (!grade) {
@@ -69,36 +70,37 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
       {/* Back button */}
       <button
         onClick={() => onNavigate('home')}
-        className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-teal-300 transition-colors mb-6 cursor-pointer group"
+        className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-amber-300 transition-colors mb-6 cursor-pointer group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         <span>Return to Home</span>
       </button>
 
-      <div className="bg-[#191c44] border border-white/15 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 relative overflow-hidden">
+      <div className="bg-[#1c0e38]/90 border border-[#f5b716]/30 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 relative overflow-hidden">
         {/* Glow decoration */}
-        <div className="absolute -top-12 -right-12 w-36 h-36 bg-amber-500/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 w-36 h-36 bg-[#f5b716]/15 rounded-full blur-2xl pointer-events-none" />
 
         {/* Header */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono font-semibold text-teal-400 tracking-wider uppercase flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              Step 1 of 2: Setup
-            </span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono tracking-wide uppercase">
+              <WILSCrest size={18} />
+              <span>WILS Student Registry</span>
+            </div>
             <button
               type="button"
               onClick={handleQuickDemoFill}
-              className="text-[11px] font-mono text-amber-300/80 hover:text-amber-300 hover:underline cursor-pointer"
+              className="text-[11px] font-mono text-amber-300/90 hover:text-amber-300 hover:underline cursor-pointer"
             >
-              ✦ Quick Demo Fill
+              ✦ Sample Fill
             </button>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-display text-white">
-            Who is charting tonight?
+
+          <h2 className="text-2xl sm:text-3xl font-bold font-brand text-white">
+            Begin Your Student Assessment
           </h2>
-          <p className="text-sm text-slate-300">
-            Enter your details so your teacher can assemble balanced study cohorts and you can view your personal constellation anytime.
+          <p className="text-xs sm:text-sm text-slate-300">
+            Enter your details to generate your individualized Westview International Language School learning constellation.
           </p>
         </div>
 
@@ -106,16 +108,16 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Name Field */}
           <div className="space-y-1.5">
-            <label className="text-xs font-mono font-medium text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <label className="text-xs font-mono font-bold text-amber-200 uppercase tracking-wider flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-amber-400" />
-              Your Name
+              <span>Full Name or Preferred Name</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Maya Chen"
-              className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 font-medium text-base outline-none transition-all"
+              className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] focus:ring-2 focus:ring-[#f5b716]/20 rounded-2xl px-4 py-3.5 text-white placeholder-slate-500 font-medium text-base outline-none transition-all shadow-inner"
               autoFocus
             />
           </div>
@@ -123,36 +125,36 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
           {/* Grade Field */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <School className="w-3.5 h-3.5 text-teal-400" />
-                Grade Level
+              <label className="text-xs font-mono font-bold text-amber-200 uppercase tracking-wider flex items-center gap-1.5">
+                <School className="w-3.5 h-3.5 text-amber-400" />
+                <span>Grade Level</span>
               </label>
               <select
                 value={grade}
                 onChange={(e) => handleGradeChange(e.target.value)}
-                className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white font-medium text-base outline-none transition-all cursor-pointer"
+                className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] focus:ring-2 focus:ring-[#f5b716]/20 rounded-2xl px-4 py-3.5 text-white font-medium text-sm outline-none transition-all cursor-pointer"
               >
                 <option value="">Select Grade...</option>
                 <option value="10">Grade 10 (Sophomore)</option>
                 <option value="11">Grade 11 (Junior)</option>
                 <option value="12">Grade 12 (Senior)</option>
-                <option value="Other">Other / College</option>
+                <option value="Other">Other Section</option>
               </select>
             </div>
 
             {/* Class Field */}
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-indigo-400" />
-                Class Cohort
+              <label className="text-xs font-mono font-bold text-amber-200 uppercase tracking-wider flex items-center gap-1.5">
+                <GraduationCap className="w-3.5 h-3.5 text-amber-400" />
+                <span>Class Cohort</span>
               </label>
               {isCustomClass || grade === 'Other' ? (
                 <input
                   type="text"
                   value={customClassName}
                   onChange={(e) => setCustomClassName(e.target.value)}
-                  placeholder="e.g. AP-BIO-1"
-                  className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white font-medium text-base uppercase outline-none transition-all"
+                  placeholder="e.g. 11-ADV"
+                  className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] focus:ring-2 focus:ring-[#f5b716]/20 rounded-2xl px-4 py-3.5 text-white font-medium text-sm uppercase outline-none transition-all"
                 />
               ) : (
                 <select
@@ -166,7 +168,7 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
                       setClassName(e.target.value);
                     }
                   }}
-                  className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white font-medium text-base outline-none transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] focus:ring-2 focus:ring-[#f5b716]/20 rounded-2xl px-4 py-3.5 text-white font-medium text-sm outline-none transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 >
                   <option value="">{grade ? 'Select Class...' : 'Pick grade first'}</option>
                   {classOptions.map((c) => (
@@ -174,7 +176,7 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
                       Class {c}
                     </option>
                   ))}
-                  <option value="CUSTOM">+ Custom Class Name...</option>
+                  <option value="CUSTOM">+ Custom Class Section...</option>
                 </select>
               )}
             </div>
@@ -188,8 +190,8 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
           )}
 
           {/* Privacy Note */}
-          <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-start gap-2.5 text-xs text-slate-300">
-            <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-2.5 text-xs text-slate-300">
+            <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <span>
               This is a reflective self-assessment with <strong>no wrong answers</strong> or score rankings. It takes approximately 3–4 minutes to complete.
             </span>
@@ -198,9 +200,9 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
           {/* Submit CTA */}
           <button
             type="submit"
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-slate-950 font-display font-bold text-base shadow-xl shadow-amber-500/20 hover:shadow-amber-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] font-brand font-black text-base shadow-xl shadow-[#f5b716]/20 hover:shadow-[#f5b716]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Compass className="w-5 h-5 text-slate-950" />
+            <Compass className="w-5 h-5 text-[#12092a]" />
             <span>Begin Assessment ✦ 36 Questions</span>
           </button>
         </form>
@@ -208,3 +210,4 @@ export const StudentFormView: React.FC<StudentFormViewProps> = ({
     </div>
   );
 };
+

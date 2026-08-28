@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StudentRecord, TraitKey } from '../types';
 import { ConstellationRadar } from './ConstellationRadar';
+import { WILSCrest } from './WILSLogo';
 import { SCALES, SCALE_ORDER, SUPPORT_TIPS } from '../data/constellationData';
 import { getTopAndFocusTraits, saveStudent } from '../utils/storage';
 import { generateStudentPDF } from '../utils/pdfExport';
-import { ArrowLeft, Printer, Sparkles, BookOpen, Target, Lightbulb, MessageSquare, Save, Check, FileDown, Loader as Loader2 } from 'lucide-react';
+import { ArrowLeft, Printer, Sparkles, BookOpen, Target, Lightbulb, MessageSquare, Save, Check, FileDown, Loader2 } from 'lucide-react';
 
 interface TeacherStudentModalProps {
   student: StudentRecord;
@@ -52,52 +53,53 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-teal-300 transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-amber-300 transition-colors cursor-pointer group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Teacher Dashboard</span>
+          <span>Back to Faculty Dashboard</span>
         </button>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleDownloadPDF}
             disabled={isGeneratingPdf}
-            className="px-3.5 py-1.5 rounded-xl bg-teal-400/20 hover:bg-teal-400/30 border border-teal-400/40 text-xs font-mono text-teal-200 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-[#f5b716]/20 hover:bg-[#f5b716]/30 border border-[#f5b716]/40 text-xs font-mono text-amber-200 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
           >
             {isGeneratingPdf ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-teal-300" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
             ) : (
-              <FileDown className="w-3.5 h-3.5 text-teal-300" />
+              <FileDown className="w-3.5 h-3.5 text-amber-300" />
             )}
-            <span>{isGeneratingPdf ? 'Building PDF...' : 'Download PDF Report'}</span>
+            <span>{isGeneratingPdf ? 'Building PDF...' : 'Download PDF Dossier'}</span>
           </button>
 
           <button
             onClick={() => window.print()}
-            className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Printer className="w-3.5 h-3.5 text-slate-300" />
-            <span>Print Report</span>
+            <span>Print Dossier</span>
           </button>
         </div>
       </div>
 
       {/* Student Banner Header */}
-      <div className="bg-[#171a42] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-mono text-teal-300">
+          <div className="flex items-center gap-2 text-xs font-mono text-amber-300 font-bold">
+            <WILSCrest size={16} />
             <span>Grade {student.grade}</span>
             <span>•</span>
             <span>Class {student.className}</span>
           </div>
-          <h1 className="text-3xl font-bold font-display text-white">{student.name}</h1>
-          <p className="text-xs font-mono text-slate-400">
-            Learner Archetype: <span className="text-amber-300 font-semibold">{student.archetype?.name}</span>
+          <h1 className="text-3xl font-bold font-brand text-white">{student.name}</h1>
+          <p className="text-xs font-mono text-slate-300">
+            Learner Archetype: <span className="text-[#f5b716] font-bold">{student.archetype?.name}</span>
           </p>
         </div>
 
         <div className="text-left sm:text-right space-y-1">
-          <div className="font-mono text-xl font-bold text-amber-300 bg-amber-400/10 px-4 py-2 rounded-2xl border border-amber-400/20 inline-block">
+          <div className="font-mono text-xl font-bold text-[#f5b716] bg-[#f5b716]/15 px-4 py-2 rounded-2xl border border-[#f5b716]/30 inline-block">
             {student.id}
           </div>
           <div className="text-[11px] font-mono text-slate-400">
@@ -110,15 +112,15 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <div
           id="teacher-student-radar"
-          className="lg:col-span-6 bg-[#171a42] border border-white/15 rounded-3xl p-6 flex flex-col items-center justify-center"
+          className="lg:col-span-6 bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 flex flex-col items-center justify-center shadow-xl"
         >
-          <span className="text-xs font-mono text-slate-400 mb-2">Student Constellation</span>
+          <span className="text-xs font-mono text-[#f5b716] font-bold mb-2">Student Constellation</span>
           <ConstellationRadar scores={student.scores} size={300} interactive={true} />
         </div>
 
-        <div className="lg:col-span-6 bg-[#171a42] border border-white/15 rounded-3xl p-6 space-y-4">
-          <h3 className="text-lg font-bold font-display text-white flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-teal-400" />
+        <div className="lg:col-span-6 bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 space-y-4 shadow-xl">
+          <h3 className="text-lg font-bold font-brand text-white flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-amber-400" />
             <span>Trait Dimension Scores</span>
           </h3>
 
@@ -136,7 +138,7 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
                       {score?.mean?.toFixed(2)} / 5.0
                     </span>
                   </div>
-                  <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-2 w-full bg-[#120926] rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full"
                       style={{ width: `${pct}%`, backgroundColor: scale.color }}
@@ -149,16 +151,15 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
         </div>
       </div>
 
-
       {/* Classroom Strategies & Accommodations */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Strength Leverage */}
-        <div className="p-6 rounded-3xl bg-[#171a42] border border-amber-400/30 space-y-2.5">
+        <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/30 space-y-2.5 shadow-lg">
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-300">
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-[#f5b716]" />
             <span>Top Strength: {topScale.label}</span>
           </div>
-          <h4 className="text-base font-bold font-display text-white">
+          <h4 className="text-base font-bold font-brand text-white">
             Classroom Role Recommendation
           </h4>
           <p className="text-xs text-slate-300 leading-relaxed">
@@ -167,12 +168,12 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
         </div>
 
         {/* Focus Area Accommodation */}
-        <div className="p-6 rounded-3xl bg-[#171a42] border border-teal-400/30 space-y-2.5">
-          <div className="flex items-center gap-2 text-xs font-mono font-bold text-teal-300">
-            <Lightbulb className="w-4 h-4" />
+        <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-purple-400/30 space-y-2.5 shadow-lg">
+          <div className="flex items-center gap-2 text-xs font-mono font-bold text-purple-300">
+            <Lightbulb className="w-4 h-4 text-purple-300" />
             <span>Focus Area: {focusScale.label}</span>
           </div>
-          <h4 className="text-base font-bold font-display text-white">
+          <h4 className="text-base font-bold font-brand text-white">
             Targeted Instructional Accommodation
           </h4>
           <p className="text-xs text-slate-300 leading-relaxed">
@@ -183,26 +184,26 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
 
       {/* Student's Self-Selected Reflection */}
       {student.reflection && (
-        <div className="p-6 rounded-3xl bg-gradient-to-r from-[#171a40] via-[#1c2052] to-[#171a40] border border-white/15 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-teal-300 font-semibold">
-            <MessageSquare className="w-4 h-4" />
-            <span>Student’s Requested Support This Semester</span>
+        <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/25 space-y-2 shadow-lg">
+          <div className="flex items-center gap-2 text-xs font-mono text-amber-300 font-semibold">
+            <MessageSquare className="w-4 h-4 text-[#f5b716]" />
+            <span>Student’s Requested Support This Term</span>
           </div>
-          <blockquote className="text-base sm:text-lg font-display text-white italic pl-3 border-l-2 border-amber-400">
+          <blockquote className="text-base sm:text-lg font-brand text-white italic pl-3 border-l-2 border-[#f5b716]">
             "{student.reflection}"
           </blockquote>
         </div>
       )}
 
       {/* Teacher Private Notes */}
-      <div className="p-6 rounded-3xl bg-[#171a42] border border-white/15 space-y-3">
+      <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/25 space-y-3 shadow-lg">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
+          <label className="text-xs font-mono font-bold text-amber-200 uppercase tracking-wider">
             Staff / Teacher Private Notes & Observations
           </label>
           {savedNotes && (
-            <span className="text-xs font-mono text-teal-300 flex items-center gap-1">
-              <Check className="w-3.5 h-3.5" /> Saved!
+            <span className="text-xs font-mono text-amber-300 flex items-center gap-1 font-bold">
+              <Check className="w-3.5 h-3.5 text-[#f5b716]" /> Saved!
             </span>
           )}
         </div>
@@ -210,14 +211,14 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Add confidential teacher notes regarding learning modifications, group dynamics, or IEP accommodations..."
+          placeholder="Add confidential teacher notes regarding learning modifications, group dynamics, or accommodations..."
           rows={3}
-          className="w-full bg-[#11132e] border border-white/15 focus:border-teal-400 rounded-2xl p-4 text-xs sm:text-sm font-mono text-white outline-none"
+          className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] rounded-2xl p-4 text-xs sm:text-sm font-mono text-white outline-none shadow-inner"
         />
 
         <button
           onClick={handleSaveNotes}
-          className="px-4 py-2 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-display font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#f5b716] to-[#d99b06] text-[#12092a] font-brand font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-md hover:scale-105 active:scale-100"
         >
           <Save className="w-3.5 h-3.5" />
           <span>Save Notes</span>
@@ -226,3 +227,4 @@ export const TeacherStudentModal: React.FC<TeacherStudentModalProps> = ({
     </div>
   );
 };
+

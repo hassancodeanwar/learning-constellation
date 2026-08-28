@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { AppView, StudentRecord, TraitKey } from '../types';
 import { ALL_CLASSES, SCALES, SCALE_ORDER, SUPPORT_TIPS, determineArchetype, computeStudentScores } from '../data/constellationData';
 import { ConstellationRadar } from './ConstellationRadar';
+import { WILSCrest } from './WILSLogo';
 import {
   computeClassAverages,
   calculateStudyPairs,
@@ -122,8 +123,8 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
   };
 
   const handleAddSampleStudent = () => {
-    const firstNames = ['Leo', 'Chloe', 'Julian', 'Amara', 'Gabriel', 'Zion', 'Harper'];
-    const lastNames = ['Vance', 'Kovacs', 'Patel', 'Sterling', 'Brooks', 'Nakamura'];
+    const firstNames = ['Leo', 'Chloe', 'Julian', 'Amara', 'Gabriel', 'Zion', 'Harper', 'Youssef', 'Nour', 'Karim', 'Farida'];
+    const lastNames = ['Vance', 'Kovacs', 'Patel', 'Sterling', 'Brooks', 'Nakamura', 'Mansour', 'El-Sayed', 'Tawfik'];
     const randomName = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
     const targetClass = selectedClass === 'all' ? '11A' : selectedClass;
     const targetGrade = targetClass.startsWith('10') ? '10' : targetClass.startsWith('12') ? '12' : '11';
@@ -160,15 +161,15 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       {/* Top Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-mono uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Staff Portal • Cohort Analytics</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono uppercase tracking-wider mb-2 font-bold">
+            <WILSCrest size={16} />
+            <span>Westview Faculty Portal • Cohort Analytics</span>
           </div>
-          <h1 className="text-3xl font-bold font-display text-white">
+          <h1 className="text-3xl font-bold font-brand text-white">
             Classroom Constellations
           </h1>
           <p className="text-xs sm:text-sm text-slate-300">
-            Psychometric overview, instructional accommodations, and synergy pairings for your classes.
+            Psychometric overview, instructional accommodations, and synergy pairings for your WILS classes.
           </p>
         </div>
 
@@ -185,7 +186,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
           <button
             onClick={handleExport}
             disabled={classFilteredStudents.length === 0}
-            className="px-3.5 py-2 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 border border-teal-400/40 text-xs font-mono text-teal-200 flex items-center gap-1.5 transition-colors disabled:opacity-40 cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-[#f5b716]/20 hover:bg-[#f5b716]/30 border border-[#f5b716]/40 text-xs font-mono text-amber-200 flex items-center gap-1.5 transition-colors disabled:opacity-40 cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
@@ -205,10 +206,10 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
         <button
           onClick={() => setSelectedClass('all')}
-          className={`px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all shrink-0 cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             selectedClass === 'all'
-              ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/20'
-              : 'bg-[#151739] text-slate-300 hover:bg-[#1f2355] border border-white/10'
+              ? 'bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] shadow-lg shadow-[#f5b716]/20'
+              : 'bg-[#1c0e38] text-slate-300 hover:bg-[#27144d] border border-white/10'
           }`}
         >
           All Classes ({students.length})
@@ -220,16 +221,16 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
             <button
               key={c}
               onClick={() => setSelectedClass(c)}
-              className={`px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
+              className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
                 selectedClass === c
-                  ? 'bg-teal-400 text-slate-950 shadow-lg shadow-teal-400/20'
-                  : 'bg-[#151739] text-slate-300 hover:bg-[#1f2355] border border-white/10'
+                  ? 'bg-gradient-to-r from-[#f5b716] via-[#f7c53d] to-[#d99b06] text-[#12092a] shadow-lg shadow-[#f5b716]/20'
+                  : 'bg-[#1c0e38] text-slate-300 hover:bg-[#27144d] border border-white/10'
               }`}
             >
               <span>Class {c}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  selectedClass === c ? 'bg-slate-950/20 text-slate-950' : 'bg-white/10 text-slate-400'
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                  selectedClass === c ? 'bg-[#12092a]/30 text-[#12092a]' : 'bg-white/10 text-slate-300'
                 }`}
               >
                 {count}
@@ -243,21 +244,21 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       <div className="flex items-center gap-2 border-b border-white/10 pb-3">
         <button
           onClick={() => setActiveTab('roster')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-brand font-semibold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'roster'
-              ? 'bg-white/10 text-white border border-white/20'
+              ? 'bg-[#f5b716]/20 text-amber-200 border border-[#f5b716]/40'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Users className="w-4 h-4 text-teal-400" />
+          <Users className="w-4 h-4 text-amber-400" />
           <span>Student Roster ({displayStudents.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('synergy')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-brand font-semibold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'synergy'
-              ? 'bg-white/10 text-white border border-white/20'
+              ? 'bg-[#f5b716]/20 text-amber-200 border border-[#f5b716]/40'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -267,13 +268,13 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
 
         <button
           onClick={() => setActiveTab('compare')}
-          className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-brand font-semibold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'compare'
-              ? 'bg-white/10 text-white border border-white/20'
+              ? 'bg-[#f5b716]/20 text-amber-200 border border-[#f5b716]/40'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <GitCompare className="w-4 h-4 text-indigo-400" />
+          <GitCompare className="w-4 h-4 text-purple-400" />
           <span>Compare Constellations</span>
         </button>
       </div>
@@ -284,9 +285,9 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
           {/* Top Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Metric 1 */}
-            <div className="p-5 rounded-2xl bg-[#171a42] border border-white/10 space-y-1">
+            <div className="p-5 rounded-2xl bg-[#1c0e38]/90 border border-[#f5b716]/20 space-y-1 shadow-lg">
               <div className="text-xs font-mono text-slate-400 uppercase">Surveyed Responses</div>
-              <div className="text-3xl font-bold font-display text-amber-300">
+              <div className="text-3xl font-bold font-brand text-[#f5b716]">
                 {classFilteredStudents.length}
               </div>
               <p className="text-[11px] text-slate-400">
@@ -297,9 +298,9 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
             </div>
 
             {/* Metric 2 */}
-            <div className="p-5 rounded-2xl bg-[#171a42] border border-white/10 space-y-1">
+            <div className="p-5 rounded-2xl bg-[#1c0e38]/90 border border-[#f5b716]/20 space-y-1 shadow-lg">
               <div className="text-xs font-mono text-slate-400 uppercase">Archetype Diversity</div>
-              <div className="text-3xl font-bold font-display text-teal-300">
+              <div className="text-3xl font-bold font-brand text-amber-300">
                 {Object.keys(archetypeCounts).length} Types
               </div>
               <p className="text-[11px] text-slate-400">
@@ -308,9 +309,9 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
             </div>
 
             {/* Metric 3 */}
-            <div className="p-5 rounded-2xl bg-[#171a42] border border-white/10 space-y-1">
+            <div className="p-5 rounded-2xl bg-[#1c0e38]/90 border border-[#f5b716]/20 space-y-1 shadow-lg">
               <div className="text-xs font-mono text-slate-400 uppercase">Available Pairs</div>
-              <div className="text-3xl font-bold font-display text-indigo-300">
+              <div className="text-3xl font-bold font-brand text-purple-300">
                 {studyPairs.length} Synergies
               </div>
               <p className="text-[11px] text-slate-400">
@@ -320,9 +321,9 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
           </div>
 
           {/* Average Constellation Radar + Trait Breakdown Card */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#171a42] border border-white/15 rounded-3xl p-6 shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 shadow-2xl">
             <div className="lg:col-span-6 flex flex-col items-center">
-              <span className="text-xs font-mono text-amber-300 uppercase tracking-wider mb-2">
+              <span className="text-xs font-mono text-[#f5b716] uppercase tracking-wider mb-2 font-bold">
                 Cohort Average Constellation {selectedClass !== 'all' && `(${selectedClass})`}
               </span>
               <ConstellationRadar scores={cohortAverages} size={300} interactive={true} />
@@ -330,7 +331,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
 
             <div className="lg:col-span-6 space-y-4">
               <div className="space-y-1">
-                <h3 className="text-lg font-bold font-display text-white">
+                <h3 className="text-lg font-bold font-brand text-white">
                   Class Profile Mean Scores
                 </h3>
                 <p className="text-xs text-slate-300">
@@ -350,7 +351,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                         <span className="text-slate-300">{scale.label}</span>
                         <span className="font-bold text-white">{avg?.mean?.toFixed(2)} / 5.0</span>
                       </div>
-                      <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-[#120926] rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -375,7 +376,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search student, code, archetype..."
-                className="w-full bg-[#121430] border border-white/15 focus:border-teal-400 rounded-xl pl-10 pr-4 py-2.5 text-xs font-mono text-white placeholder-slate-500 outline-none"
+                className="w-full bg-[#120926] border border-[#f5b716]/25 focus:border-[#f5b716] rounded-xl pl-10 pr-4 py-2.5 text-xs font-mono text-white placeholder-slate-500 outline-none shadow-inner"
               />
             </div>
 
@@ -385,7 +386,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
               <select
                 value={sortBy}
                 onChange={(e: any) => setSortBy(e.target.value)}
-                className="bg-[#121430] border border-white/15 text-xs font-mono text-slate-200 rounded-xl px-3 py-2 outline-none cursor-pointer"
+                className="bg-[#120926] border border-[#f5b716]/25 text-xs font-mono text-slate-200 rounded-xl px-3 py-2 outline-none cursor-pointer"
               >
                 <option value="recent">Most Recent</option>
                 <option value="name">Student Name (A-Z)</option>
@@ -407,18 +408,18 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                   <div
                     key={student.id}
                     onClick={() => onSelectStudent(student)}
-                    className="p-5 rounded-2xl bg-[#171a42] hover:bg-[#1e2254] border border-white/10 hover:border-teal-400/50 transition-all cursor-pointer space-y-4 group relative overflow-hidden shadow-md hover:-translate-y-1"
+                    className="p-5 rounded-2xl bg-[#1c0e38]/90 hover:bg-[#26134d] border border-white/10 hover:border-[#f5b716]/50 transition-all cursor-pointer space-y-4 group relative overflow-hidden shadow-md hover:-translate-y-1"
                   >
                     {/* Top row */}
                     <div className="flex items-start justify-between">
                       <div>
-                        <h4 className="font-display font-bold text-base text-white group-hover:text-amber-300 transition-colors">
+                        <h4 className="font-brand font-bold text-base text-white group-hover:text-amber-300 transition-colors">
                           {student.name}
                         </h4>
                         <div className="flex items-center gap-2 text-xs font-mono text-slate-400 mt-0.5">
                           <span>Class {student.className}</span>
                           <span>•</span>
-                          <span className="text-teal-300 font-semibold">{student.id}</span>
+                          <span className="text-amber-300 font-semibold">{student.id}</span>
                         </div>
                       </div>
                       <button
@@ -431,7 +432,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                     </div>
 
                     {/* Archetype badge */}
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-slate-200">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#120926] border border-[#f5b716]/20 text-xs font-mono text-slate-200">
                       <span>{student.archetype?.symbol}</span>
                       <span className="font-semibold text-white">{student.archetype?.name}</span>
                     </div>
@@ -446,14 +447,14 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                       </div>
                       <div className="flex items-center justify-between text-[11px] font-mono">
                         <span className="text-slate-400">Growth Focus:</span>
-                        <span className="text-teal-300 font-bold">
+                        <span className="text-purple-300 font-bold">
                           {focusScale.label} ({student.scores[focus]?.mean?.toFixed(1)})
                         </span>
                       </div>
                     </div>
 
                     {/* Footer link */}
-                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-400 group-hover:text-teal-300">
+                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-400 group-hover:text-amber-300">
                       <span>View Full Profile</span>
                       <span>→</span>
                     </div>
@@ -462,13 +463,13 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
               })}
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-[#171a42] border border-white/10 text-center space-y-3">
+            <div className="p-12 rounded-3xl bg-[#1c0e38]/90 border border-white/10 text-center space-y-3">
               <div className="text-slate-400 font-mono text-sm">
                 No students found matching your filter.
               </div>
               <button
                 onClick={handleAddSampleStudent}
-                className="px-4 py-2 rounded-xl bg-teal-400/20 text-teal-300 text-xs font-mono border border-teal-400/40 hover:bg-teal-400/30"
+                className="px-4 py-2 rounded-xl bg-[#f5b716]/20 text-amber-300 text-xs font-mono border border-[#f5b716]/40 hover:bg-[#f5b716]/30"
               >
                 + Add Sample Student Response
               </button>
@@ -480,8 +481,8 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       {/* TAB 2: STUDY PAIR SYNERGY MATCHER */}
       {activeTab === 'synergy' && (
         <div className="space-y-6">
-          <div className="p-6 rounded-3xl bg-[#171a42] border border-white/15 space-y-2">
-            <h3 className="text-xl font-bold font-display text-white flex items-center gap-2">
+          <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/25 space-y-2">
+            <h3 className="text-xl font-bold font-brand text-white flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" />
               <span>Optimal Study Pairs & Collaboration Synergies</span>
             </h3>
@@ -495,13 +496,13 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
               {studyPairs.slice(0, 12).map((pair, idx) => (
                 <div
                   key={`${pair.studentA.id}-${pair.studentB.id}-${idx}`}
-                  className="p-5 rounded-2xl bg-[#171a42] border border-white/10 space-y-3 shadow-lg hover:border-amber-400/40 transition-all"
+                  className="p-5 rounded-2xl bg-[#1c0e38]/90 border border-white/10 space-y-3 shadow-lg hover:border-[#f5b716]/40 transition-all"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
+                    <span className="text-xs font-mono font-bold text-amber-300 bg-[#f5b716]/15 px-2.5 py-0.5 rounded-full border border-[#f5b716]/30">
                       {pair.similarityPct}% Compatibility
                     </span>
-                    <span className="text-xs font-mono text-teal-300">
+                    <span className="text-xs font-mono text-purple-300">
                       {pair.synergyType}
                     </span>
                   </div>
@@ -512,7 +513,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                       onClick={() => onSelectStudent(pair.studentA)}
                       className="cursor-pointer hover:underline"
                     >
-                      <div className="font-display font-bold text-white text-sm">
+                      <div className="font-brand font-bold text-white text-sm">
                         {pair.studentA.name}
                       </div>
                       <div className="text-[11px] font-mono text-slate-400">
@@ -520,13 +521,13 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                       </div>
                     </div>
 
-                    <span className="text-slate-500 font-mono text-xs font-bold">&amp;</span>
+                    <span className="text-amber-400 font-mono text-xs font-bold">&amp;</span>
 
                     <div
                       onClick={() => onSelectStudent(pair.studentB)}
                       className="text-right cursor-pointer hover:underline"
                     >
-                      <div className="font-display font-bold text-white text-sm">
+                      <div className="font-brand font-bold text-white text-sm">
                         {pair.studentB.name}
                       </div>
                       <div className="text-[11px] font-mono text-slate-400">
@@ -536,20 +537,20 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                   </div>
 
                   {/* Synergy rationale */}
-                  <p className="text-xs text-slate-300 leading-relaxed bg-[#121430] p-3 rounded-xl border border-white/5">
+                  <p className="text-xs text-slate-300 leading-relaxed bg-[#120926] p-3 rounded-xl border border-white/5">
                     ✦ {pair.description}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-[#171a42] border border-white/10 text-center space-y-3">
+            <div className="p-12 rounded-3xl bg-[#1c0e38]/90 border border-white/10 text-center space-y-3">
               <p className="text-slate-400 font-mono text-sm">
                 Need at least 2 students in the selected class cohort to calculate study pairs.
               </p>
               <button
                 onClick={handleAddSampleStudent}
-                className="px-4 py-2 rounded-xl bg-teal-400/20 text-teal-300 text-xs font-mono border border-teal-400/40"
+                className="px-4 py-2 rounded-xl bg-[#f5b716]/20 text-amber-300 text-xs font-mono border border-[#f5b716]/40"
               >
                 + Add Another Student
               </button>
@@ -561,9 +562,9 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
       {/* TAB 3: COMPARE CONSTELLATIONS */}
       {activeTab === 'compare' && (
         <div className="space-y-6">
-          <div className="p-6 rounded-3xl bg-[#171a42] border border-white/15 space-y-4">
-            <h3 className="text-xl font-bold font-display text-white flex items-center gap-2">
-              <GitCompare className="w-5 h-5 text-indigo-400" />
+          <div className="p-6 rounded-3xl bg-[#1c0e38]/90 border border-[#f5b716]/25 space-y-4">
+            <h3 className="text-xl font-bold font-brand text-white flex items-center gap-2">
+              <GitCompare className="w-5 h-5 text-purple-400" />
               <span>Side-by-Side Constellation Overlay</span>
             </h3>
 
@@ -574,7 +575,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                 <select
                   value={compareStudentAId}
                   onChange={(e) => setCompareStudentAId(e.target.value)}
-                  className="w-full bg-[#121430] border border-white/15 text-xs font-mono text-white rounded-xl p-3 outline-none"
+                  className="w-full bg-[#120926] border border-[#f5b716]/25 text-xs font-mono text-white rounded-xl p-3 outline-none"
                 >
                   <option value="">Select Student A...</option>
                   {students.map((s) => (
@@ -590,7 +591,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                 <select
                   value={compareStudentBId}
                   onChange={(e) => setCompareStudentBId(e.target.value)}
-                  className="w-full bg-[#121430] border border-white/15 text-xs font-mono text-white rounded-xl p-3 outline-none"
+                  className="w-full bg-[#120926] border border-[#f5b716]/25 text-xs font-mono text-white rounded-xl p-3 outline-none"
                 >
                   <option value="CLASS_AVG">Class Cohort Average</option>
                   {students
@@ -606,7 +607,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
           </div>
 
           {studentA ? (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#171a42] border border-white/15 rounded-3xl p-6 shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#1c0e38]/90 border border-[#f5b716]/25 rounded-3xl p-6 shadow-2xl">
               <div className="lg:col-span-6 flex flex-col items-center">
                 <ConstellationRadar
                   scores={studentA.scores}
@@ -619,7 +620,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
 
               <div className="lg:col-span-6 space-y-4">
                 <div className="space-y-1">
-                  <h4 className="text-lg font-bold font-display text-white">
+                  <h4 className="text-lg font-bold font-brand text-white">
                     Comparison Analysis: {studentA.name} vs{' '}
                     {compareStudentBId === 'CLASS_AVG' ? 'Cohort Average' : studentB?.name}
                   </h4>
@@ -639,7 +640,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                     const diff = valA - valB;
 
                     return (
-                      <div key={scaleKey} className="p-2.5 rounded-xl bg-[#121430] flex items-center justify-between text-xs font-mono">
+                      <div key={scaleKey} className="p-2.5 rounded-xl bg-[#120926] flex items-center justify-between text-xs font-mono">
                         <span className="text-slate-200">{scale.label}</span>
                         <div className="flex items-center gap-3">
                           <span className="text-amber-300 font-bold">{valA.toFixed(2)}</span>
@@ -648,7 +649,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
                           <span
                             className={`px-1.5 py-0.5 rounded text-[10px] ${
                               diff > 0.3
-                                ? 'bg-amber-400/20 text-amber-300'
+                                ? 'bg-[#f5b716]/20 text-amber-300'
                                 : diff < -0.3
                                 ? 'bg-rose-400/20 text-rose-300'
                                 : 'bg-white/5 text-slate-400'
@@ -664,7 +665,7 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
               </div>
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-[#171a42] border border-white/10 text-center text-slate-400 font-mono text-sm">
+            <div className="p-12 rounded-3xl bg-[#1c0e38]/90 border border-white/10 text-center text-slate-400 font-mono text-sm">
               Please select a primary student to initiate the comparative constellation overlay.
             </div>
           )}
@@ -673,3 +674,4 @@ export const TeacherDashboardView: React.FC<TeacherDashboardViewProps> = ({
     </div>
   );
 };
+

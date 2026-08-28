@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AppView, Question } from '../types';
 import { QUESTIONS, REFLECTION_OPTIONS, SCALES } from '../data/constellationData';
+import { WILSCrest } from './WILSLogo';
 import { ArrowLeft, Check, Sparkles, HelpCircle } from 'lucide-react';
 
 interface QuizViewProps {
@@ -13,8 +14,8 @@ const LIKERT_OPTIONS = [
   { val: 1, label: 'Strongly Disagree', short: 'Str. Disagree', badgeColor: 'hover:border-rose-400/50 hover:bg-rose-500/10' },
   { val: 2, label: 'Disagree', short: 'Disagree', badgeColor: 'hover:border-orange-400/50 hover:bg-orange-500/10' },
   { val: 3, label: 'Neutral', short: 'Neutral', badgeColor: 'hover:border-slate-400/50 hover:bg-slate-500/10' },
-  { val: 4, label: 'Agree', short: 'Agree', badgeColor: 'hover:border-teal-400/50 hover:bg-teal-500/10' },
-  { val: 5, label: 'Strongly Agree', short: 'Str. Agree', badgeColor: 'hover:border-amber-400/50 hover:bg-amber-500/10' }
+  { val: 4, label: 'Agree', short: 'Agree', badgeColor: 'hover:border-amber-400/50 hover:bg-amber-500/10' },
+  { val: 5, label: 'Strongly Agree', short: 'Str. Agree', badgeColor: 'hover:border-[#f5b716]/60 hover:bg-[#f5b716]/15' }
 ];
 
 export const QuizView: React.FC<QuizViewProps> = ({
@@ -84,41 +85,41 @@ export const QuizView: React.FC<QuizViewProps> = ({
             if (qIndex > 0) handlePrev();
             else onNavigate('studentForm');
           }}
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-teal-300 transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-amber-300 transition-colors cursor-pointer group"
         >
           <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
           <span>{qIndex > 0 ? 'Previous Question' : 'Exit to Setup'}</span>
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono text-slate-300">
             {studentData.name} ({studentData.className})
           </span>
-          <span className="text-xs font-mono font-bold text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+          <span className="text-xs font-mono font-bold text-[#120926] bg-[#f5b716] px-2.5 py-0.5 rounded-full shadow-sm">
             {qIndex + 1} / {totalSteps}
           </span>
         </div>
       </div>
 
       {/* Progress Track */}
-      <div className="h-2 w-full bg-[#16183c] rounded-full overflow-hidden mb-6 border border-white/10 relative">
+      <div className="h-2.5 w-full bg-[#120926] rounded-full overflow-hidden mb-6 border border-[#f5b716]/20 relative">
         <div
-          className="h-full bg-gradient-to-r from-teal-400 via-indigo-400 to-amber-400 rounded-full transition-all duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-purple-500 via-[#f5b716] to-[#fce282] rounded-full transition-all duration-300 ease-out shadow-sm"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Main Question Card or Reflection Card */}
       {!isReflectionStep && currentQuestion && currentScale ? (
-        <div className="bg-[#1a1d46] border border-white/15 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-7 relative overflow-hidden transition-all">
+        <div className="bg-[#1c0e38]/90 border border-[#f5b716]/30 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-7 relative overflow-hidden transition-all">
           {/* Active Dimension Header */}
           <div className="flex items-center justify-between">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#120926] border border-[#f5b716]/25 text-xs font-mono">
               <span
                 className="w-2.5 h-2.5 rounded-full shadow-sm"
                 style={{ backgroundColor: currentScale.color }}
               />
-              <span className="text-white font-medium">{currentScale.label}</span>
+              <span className="text-amber-300 font-brand font-bold">{currentScale.label}</span>
             </div>
             <span className="text-[11px] font-mono text-slate-400 hidden sm:inline-block">
               Press 1–5 on keyboard
@@ -127,11 +128,11 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
           {/* Question Text */}
           <div className="space-y-2 py-2">
-            <h2 className="text-xl sm:text-2xl font-bold font-display text-white leading-snug">
+            <h2 className="text-xl sm:text-2xl font-bold font-sans text-white leading-snug">
               "{currentQuestion.text}"
             </h2>
-            <p className="text-xs text-slate-400">
-              Select how accurately this reflects your natural study behavior.
+            <p className="text-xs text-slate-300">
+              Select how accurately this statement describes your normal study or problem-solving behavior.
             </p>
           </div>
 
@@ -144,17 +145,17 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   key={opt.val}
                   type="button"
                   onClick={() => handleAnswer(opt.val)}
-                  className={`w-full text-left p-4 rounded-xl border font-medium text-sm sm:text-base flex items-center justify-between transition-all duration-150 cursor-pointer ${
+                  className={`w-full text-left p-4 rounded-2xl border font-medium text-sm sm:text-base flex items-center justify-between transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'bg-amber-400/20 border-amber-400/60 text-amber-200 shadow-md translate-x-1'
-                      : `bg-[#121430] border-white/10 text-slate-200 ${opt.badgeColor} hover:translate-x-0.5`
+                      ? 'bg-[#f5b716]/25 border-[#f5b716] text-amber-200 shadow-md translate-x-1'
+                      : `bg-[#120926] border-[#f5b716]/20 text-slate-200 ${opt.badgeColor} hover:translate-x-0.5`
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <span
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-xs font-bold transition-colors ${
+                      className={`w-7 h-7 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-colors ${
                         isSelected
-                          ? 'bg-amber-400 text-slate-950 shadow'
+                          ? 'bg-[#f5b716] text-[#120926] shadow font-black'
                           : 'bg-white/5 text-slate-400 border border-white/10'
                       }`}
                     >
@@ -162,7 +163,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                     </span>
                     <span>{opt.label}</span>
                   </div>
-                  {isSelected && <Check className="w-5 h-5 text-amber-300" />}
+                  {isSelected && <Check className="w-5 h-5 text-[#f5b716]" />}
                 </button>
               );
             })}
@@ -171,23 +172,23 @@ export const QuizView: React.FC<QuizViewProps> = ({
           {/* Footer guidance */}
           <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-slate-400">
             <span>1 = Strongly Disagree</span>
-            <span>5 = Strongly Agree</span>
+            <span className="text-amber-300 font-bold">5 = Strongly Agree</span>
           </div>
         </div>
       ) : (
         /* Final Reflection Step */
-        <div className="bg-[#1a1d46] border border-white/15 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 relative overflow-hidden">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-mono uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Final Reflection
+        <div className="bg-[#1c0e38]/90 border border-[#f5b716]/30 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl space-y-6 relative overflow-hidden">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono uppercase tracking-wider font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-[#f5b716]" />
+            <span>WILS Final Reflection</span>
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-bold font-display text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold font-brand text-white">
               This semester, what support would help you most?
             </h2>
             <p className="text-sm text-slate-300">
-              Your teacher will use this feedback to tailor classroom resources and project pathways.
+              Your teachers at Westview will use this feedback to tailor project pathways and study guidance.
             </p>
           </div>
 
@@ -204,14 +205,14 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       handleComplete(opt);
                     }
                   }}
-                  className={`w-full text-left p-4 rounded-xl border font-medium text-sm sm:text-base flex items-center justify-between transition-all duration-150 cursor-pointer ${
+                  className={`w-full text-left p-4 rounded-2xl border font-medium text-sm sm:text-base flex items-center justify-between transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'bg-teal-400/20 border-teal-400/60 text-teal-200 shadow-md'
-                      : 'bg-[#121430] border-white/10 text-slate-200 hover:border-teal-400/40 hover:bg-teal-500/10'
+                      ? 'bg-[#f5b716]/25 border-[#f5b716] text-amber-200 shadow-md'
+                      : 'bg-[#120926] border-[#f5b716]/20 text-slate-200 hover:border-[#f5b716]/50 hover:bg-[#251249]'
                   }`}
                 >
                   <span>{opt}</span>
-                  {isSelected && <Check className="w-5 h-5 text-teal-300" />}
+                  {isSelected && <Check className="w-5 h-5 text-[#f5b716]" />}
                 </button>
               );
             })}
@@ -224,22 +225,22 @@ export const QuizView: React.FC<QuizViewProps> = ({
                 value={customReflection}
                 onChange={(e) => setCustomReflection(e.target.value)}
                 placeholder="Type your preferred learning support here..."
-                className="w-full bg-[#11132e] border border-teal-400/40 focus:ring-2 focus:ring-teal-400/20 rounded-xl px-4 py-3 text-white text-sm outline-none"
+                className="w-full bg-[#120926] border border-[#f5b716]/40 focus:ring-2 focus:ring-[#f5b716]/30 rounded-2xl px-4 py-3.5 text-white text-sm outline-none shadow-inner"
                 autoFocus
               />
               <button
                 onClick={() => handleComplete('Other')}
                 disabled={!customReflection.trim()}
-                className="w-full py-3 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold font-display text-sm transition-all disabled:opacity-40 cursor-pointer"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#f5b716] to-[#d99b06] text-[#12092a] font-brand font-black text-sm transition-all disabled:opacity-40 cursor-pointer shadow-lg"
               >
-                Chart My Constellation ✦
+                Generate My WILS Constellation ✦
               </button>
             </div>
           )}
 
           {isSubmitting && (
-            <div className="p-4 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-mono text-center animate-pulse">
-              Charting your celestial learning constellation...
+            <div className="p-4 rounded-2xl bg-[#f5b716]/15 border border-[#f5b716]/30 text-amber-300 text-xs font-mono text-center animate-pulse">
+              Charting your Westview learning constellation...
             </div>
           )}
         </div>
@@ -247,3 +248,4 @@ export const QuizView: React.FC<QuizViewProps> = ({
     </div>
   );
 };
+

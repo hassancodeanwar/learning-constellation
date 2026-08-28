@@ -22,38 +22,42 @@ export async function generateStudentPDF(
   const margin = 14;
   const contentWidth = pageWidth - margin * 2;
 
-  // Background deep celestial theme header bar
-  doc.setFillColor(15, 18, 48); // #0f1230
-  doc.rect(0, 0, pageWidth, 42, 'F');
+  // Background deep WILS royal purple header bar
+  doc.setFillColor(14, 8, 33); // #0e0821 WILS Royal Purple
+  doc.rect(0, 0, pageWidth, 44, 'F');
 
   // Decorative gold accent line
-  doc.setFillColor(245, 184, 75); // #f5b84b
-  doc.rect(0, 42, pageWidth, 1.5, 'F');
+  doc.setFillColor(245, 183, 22); // #f5b716 WILS Gold
+  doc.rect(0, 44, pageWidth, 2, 'F');
 
   // Header Title
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(245, 183, 22); // Gold
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.text('LEARNING CONSTELLATION', margin, 18);
+  doc.setFontSize(10);
+  doc.text('WESTVIEW INTERNATIONAL LANGUAGE SCHOOL', margin, 14);
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(17);
+  doc.text('LEARNING CONSTELLATION DOSSIER', margin, 23);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(78, 217, 192); // #4ed9c0 teal
-  doc.text('COGNITIVE PSYCHOMETRICS & LEARNER DOSSIER', margin, 25);
+  doc.setFontSize(9);
+  doc.setTextColor(216, 180, 254); // Purple-200
+  doc.text('COGNITIVE PSYCHOMETRIC & LEARNER PROFILE', margin, 31);
 
   // Student Info in Header right aligned
-  doc.setTextColor(230, 235, 245);
+  doc.setTextColor(240, 230, 255);
   doc.setFontSize(9);
   doc.text(`Student: ${student.name}`, pageWidth - margin, 14, { align: 'right' });
   doc.text(`Grade ${student.grade} • Class ${student.className}`, pageWidth - margin, 20, { align: 'right' });
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(245, 184, 75);
+  doc.setTextColor(245, 183, 22);
   doc.text(`Code: ${student.id}`, pageWidth - margin, 27, { align: 'right' });
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(160, 170, 195);
+  doc.setTextColor(200, 190, 220);
   doc.text(`Date: ${new Date(student.timestamp).toLocaleDateString()}`, pageWidth - margin, 34, { align: 'right' });
 
-  let currentY = 50;
+  let currentY = 52;
 
   // Archetype Showcase Box
   doc.setFillColor(246, 248, 252);
@@ -95,7 +99,7 @@ export async function generateStudentPDF(
     if (radarElem) {
       try {
         const canvas = await html2canvas(radarElem, {
-          backgroundColor: '#181b42',
+          backgroundColor: '#1c0e38',
           scale: 2,
           logging: false
         });
