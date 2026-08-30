@@ -45,11 +45,11 @@ export interface ArchetypeDefinition {
 }
 
 export interface StudentRecord {
-  id: string; // e.g. "AJ-4821"
+  id: string;
   name: string;
   grade: string;
   className: string;
-  answers: Record<number, number>; // questionId -> 1..5
+  answers: Record<number, number>;
   reflection: string;
   scores: TraitScores;
   archetype: ArchetypeDefinition;

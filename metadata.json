@@ -1,6 +1,6 @@
 {
-  "name": "Learning Constellation",
-  "description": "A celestial learning-style assessment and teacher analytics platform mapping student traits, strengths, and study synergies as interactive constellations.",
+  "name": "Westview Learning Compass",
+  "description": "Westview International Language School's student learning compass — a psychometric assessment mapping student traits, strengths, and study synergies.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
